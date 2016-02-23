@@ -32,6 +32,7 @@ class Vaisseau(pygame.sprite.Sprite):
         # Cette petite variable nous permettra par la suite d'ignorer les collisions quand il est activé
         self.immunite = False
 
+        self.apparition = True
     """ Methode (fonction) de la classe pour le mouvement du vaisseau qui suivra celui de la souris"""
 
     def update(self):
@@ -43,8 +44,9 @@ class Vaisseau(pygame.sprite.Sprite):
         self.centrecanon = [self.rect.x + self.taille[0] / 2 + 15, self.rect.y + self.taille[1] / 2 - 1]
 
         # La position du vaisseau sera donc celle de la souris
-        self.rect.x = position[0]
-        self.rect.y = position[1]
+        if self.immunite == False:
+            self.rect.x = position[0]
+            self.rect.y = position[1]
 
     def mort(self):
 
@@ -52,14 +54,22 @@ class Vaisseau(pygame.sprite.Sprite):
         self.vie -= 1
         self.immunite = True
         self.image.set_alpha(0)
+
         # Et est joué le bruit d'explosion
         #explosion = pygame.mixer.Sound("explosion.ogg")
         #explosion.play()
 
-        # Etre immortel pendant 5s avant de faire réapparaitre le vaisseau, laisser du répit au joueur
-        """mortel= pygame.USEREVENT+1
-        pygame.time.set_timer(mortel, 5000)
-        for event in pygame.event.get():
-            while event.type != mortel:
-                self.immunite = True""" # En cours de travail
+    def cligno(self):
 
+        # On fait clignoter l'image du vaisseau en faisant varier la transparence de ce dernier
+        transparence = self.image.get_alpha()
+        print(transparence)
+        if self.apparition == True:
+            transparence+=4
+            if transparence > 255:
+                self.apparition = False
+        else:
+            transparence-=4
+            if transparence < 10:
+                self.apparition = True
+        self.image.set_alpha(transparence)

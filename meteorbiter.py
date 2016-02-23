@@ -28,24 +28,25 @@ joueur = vaisseau.Vaisseau()
 liste_tout.add(joueur)
 joueur.rect.x = largeur/20
 joueur.rect.y = hauteur/2
+heuredeces = 0
 
 # différentes directions pour les tirs
-directions = ["N","S","E","O","NE","NO","SE","SO"]
+directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
+
 
 # Fonction/animation explosion lors de la mort du vaisseau
-def explosion(coor_x,coor_y):
+def explosion(coor_x, coor_y):
 
-    for a in range (8):
-        b= tir.Explosion()
+    for a in range(8):
+        b = tir.Explosion()
         liste_explosion.add(b)
-        b.modetir=directions[a]
+        b.modetir = directions[a]
 
-    for debris in liste_explosion :
-        debris.rect.x=coor_x
-        debris.rect.y=coor_y
+    for debris in liste_explosion:
+        debris.rect.x = coor_x
+        debris.rect.y = coor_y
         liste_tout.add(debris)
         liste_explosion.remove(debris)
-
 
 
 ###############################################Programme principal
@@ -68,8 +69,25 @@ while not arret:
             liste_tir.add(balle)
 
         elif event.type == pygame.KEYDOWN:
+            # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
+            # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
             joueur.mort()
-            explosion(joueur.centrecanon[0],joueur.centrecanon[1])
+            explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+            heuredeces = int(pygame.time.get_ticks())
+
+    # Il faut laisser le joueur respirer après une mort :
+    # Le vaisseau est totalement invisible pendant 2s (il a explosé)
+    # Pendant 5s il réapparait en clignotant, pour indiquer au joueur qu'il doit se préparer
+
+    temps = pygame.time.get_ticks()
+
+    if temps - heuredeces > 2500 and temps - heuredeces < 7500 and joueur.immunite:
+        joueur.cligno()
+        joueur.rect.x = largeur/20
+        joueur.rect.y = hauteur/2
+    elif temps - heuredeces > 7500:
+        joueur.immunite = False
+        joueur.image.set_alpha(255)
 
     # On fait disparaitre les objets lorsqu'ils ne sont plus visibles , gain de mémoire
     for objet in liste_tout:
@@ -86,13 +104,12 @@ while not arret:
             objet.kill()
             print('balle')
 
-
     # On appelle la fonction update de tous les objets en meme temps
     # pour les déplacer tous en même temps
     liste_tout.update()
 
     # Nettoyage de l'écran
-    fenetre.fill([0,0,0])
+    fenetre.fill([0, 0, 0])
 
     # Rendu de tous les objets
     liste_tout.draw(fenetre)
