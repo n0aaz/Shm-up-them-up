@@ -159,7 +159,7 @@ while not arret:
     if temps - heuredeces > 2500 and temps - heuredeces < 7500 and joueur.immunite:
         joueur.cligno()
         joueur.rect.x = largeur/20
-        joueur.rect.y = hauteur/2
+        joueur.rect.y = pygame.mouse.get_pos()[1]
         pygame.mouse.set_pos([joueur.rect.x, joueur.rect.y])
     elif temps - heuredeces > 7500:
         joueur.immunite = False
