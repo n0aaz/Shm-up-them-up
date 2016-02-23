@@ -68,7 +68,7 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
     for a in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
-            else:
+            elif not ennemi:
                 balle = tir.Tir()
             balle.modetir=directions[a]
             if perforant:
