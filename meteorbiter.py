@@ -94,7 +94,7 @@ while not arret:
             arret = True
 
         # On tire avec le clic de la souris
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant)
 
         elif event.type == pygame.KEYDOWN:
