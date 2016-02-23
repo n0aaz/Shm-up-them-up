@@ -17,6 +17,7 @@ fenetre = pygame.display.set_mode([largeur, hauteur])
 liste_tir = pygame.sprite.Group()
 liste_tout = pygame.sprite.Group()
 liste_explosion = pygame.sprite.Group()
+liste_fond = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -48,6 +49,13 @@ def explosion(coor_x, coor_y):
         liste_tout.add(debris)
         liste_explosion.remove(debris)
 
+# Génération aléatoire d'étoiles avant le démarrage du jeu
+for et in range(250):
+    etoile = tir.Etoiles()
+    etoile.rect.x = random.randrange(0,largeur)
+    etoile.rect.y = random.randrange(0,hauteur)
+    liste_fond.add(etoile)
+    liste_tout.add(etoile)
 
 ###############################################Programme principal
 while not arret:
@@ -93,16 +101,16 @@ while not arret:
     for objet in liste_tout:
         if objet.rect.x > largeur+20:
             objet.kill()
-            print('balle')
         elif objet.rect.y > hauteur+20:
             objet.kill()
-            print('balle')
         elif objet.rect.x < -20:
-            objet.kill()
-            print('balle')
+            if objet.etoile:
+                objet.rect.y = random.randrange(0,hauteur)
+                objet.rect.x = largeur + 20
+            else:
+                objet.kill()
         elif objet.rect.y < -20:
             objet.kill()
-            print('balle')
 
     # On appelle la fonction update de tous les objets en meme temps
     # pour les déplacer tous en même temps

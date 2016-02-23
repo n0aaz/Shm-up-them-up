@@ -3,6 +3,7 @@ import pygame
 jaune = [222, 194, 39]
 rouge = [255, 64, 0]
 blanc = [255, 255, 255]
+gris = [128, 128, 128]
 
 class Tir(pygame.sprite.Sprite):
     """ Une classe réservée aux tirs . """
@@ -75,3 +76,15 @@ class Explosion(Tir):
         self.image = pygame.Surface([4, 4])
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
         self.vitesse = 4
+
+"""Les etoiles sont à part, elles se déplacent toujours dans le sens contraire du joueur, et plus lentement
+on est dans l'espace quand meme, la perspective existe toujours, même en 2D :) """
+class Etoiles(Tir):
+    def __init__(self):
+        super().__init__()
+        self.couleur = gris
+        self.image = pygame.Surface([3, 3])
+        pygame.draw.ellipse(self.image, self.couleur, self.rect)
+        self.vitesse = 1
+        self.modetir = "O"
+        self.etoile = True
