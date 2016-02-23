@@ -21,6 +21,7 @@ liste_fond = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
+pygame.mouse.set_visible(False)
 
 arret = False
 
@@ -93,6 +94,7 @@ while not arret:
         joueur.cligno()
         joueur.rect.x = largeur/20
         joueur.rect.y = hauteur/2
+        pygame.mouse.set_pos([joueur.rect.x, joueur.rect.y])
     elif temps - heuredeces > 7500:
         joueur.immunite = False
         joueur.image.set_alpha(255)
