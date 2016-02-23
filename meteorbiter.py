@@ -62,11 +62,14 @@ def explosion(coor_x, coor_y):
 # Fonction tirer avec les coordonnées du point de départ, le nombre de tirs
 # la direction du tir, et l'attribut perforant activé par un bonus
 
-def tirer(coor_x, coor_y, nbtir, perforant):
+def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
     directions = ["E", "NE", "SE"]
 
     for a in range(nbtir):
-            balle = tir.Tir()
+            if ennemi:
+                balle = tir.Tirennemi()
+            else:
+                balle = tir.Tir()
             balle.modetir=directions[a]
             if perforant:
                 balle.perforant=True
@@ -99,7 +102,7 @@ while not arret:
 
         # On tire avec le clic de la souris
         elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
-            tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant)
+            tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
 
 
 
