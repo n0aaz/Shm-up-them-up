@@ -15,10 +15,16 @@ class Vaisseau(pygame.sprite.Sprite):
         # Chargement de l'image du vaisseau ; ne pas oublier convert qui va rendre le fichier manipulable
         # Ne pas oublier de rendre le fond blanc du vaisseau transparent
         self.image = pygame.image.load("vaisseau.png").convert()
-        self.image.set_colorkey(255, 255, 255)
+        self.image.set_colorkey([255, 255, 255])
+
+        # Taille de l'image du vaisseau, pour faciliter les calculs
+        self.taille= self.image.get_size()
 
         # Appel des coordonnées (taille) de l'image pour en faire les coordonnées du vaisseau
         self.rect = self.image.get_rect()
+
+        # On définit des coordonnées du centre du canon pour faciliter le placement ultérieur
+        self.centrecanon = [self.rect.x + self.taille[0] / 2 + 15, self.rect.y + self.taille[1] / 2 - 1]
 
         # On a trois vies
         self.vie = 3
@@ -28,10 +34,13 @@ class Vaisseau(pygame.sprite.Sprite):
 
     """ Methode (fonction) de la classe pour le mouvement du vaisseau qui suivra celui de la souris"""
 
-    def mouvement(self):
+    def update(self):
         # On demande la position de la souris et on la
         # stocke dans une liste de deux valeurs x et y
         position = pygame.mouse.get_pos()
+
+        # Actualisation de la position calculée du centre du canon
+        self.centrecanon = [self.rect.x + self.taille[0] / 2 + 15, self.rect.y + self.taille[1] / 2 - 1]
 
         # La position du vaisseau sera donc celle de la souris
         self.rect.x = position[0]
@@ -39,12 +48,13 @@ class Vaisseau(pygame.sprite.Sprite):
 
     def mort(self):
 
-        # Lorsque la mort est demandée , on pert une vie
+        # Lorsque la mort est demandée , on pert une vie mais on devient immunisé pour éviter d'en perdre plusieurs
         self.vie -= 1
-
+        self.immunite = True
+        self.image.set_alpha(0)
         # Et est joué le bruit d'explosion
-        explosion = pygame.mixer.Sound("explosion.ogg")
-        explosion.play()
+        #explosion = pygame.mixer.Sound("explosion.ogg")
+        #explosion.play()
 
         # Etre immortel pendant 5s avant de faire réapparaitre le vaisseau, laisser du répit au joueur
         """mortel= pygame.USEREVENT+1

@@ -49,6 +49,8 @@ while not arret:
         if event.type == pygame.QUIT:
             done = arret
 
+
+
     # fond noir
     screen.fill(BLACK)
 
