@@ -22,6 +22,7 @@ class Tir(pygame.sprite.Sprite):
 
         # Le mode de tir par défaut sera linéaire vers l'est
         self.modetir = "E"
+        self.perforant = False
 
         # Petit interrupteur qui nous servira à savoir si c'est un tir de vaisseau ou de monstre
         self.ennemi = False
@@ -66,6 +67,7 @@ class Tirennemi(Tir):
     def __init__(self):
         super().__init__()
         self.couleur = rouge
+        self.modetir = "O"
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
         self.ennemi = True
 
