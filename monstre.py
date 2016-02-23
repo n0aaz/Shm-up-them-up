@@ -1,4 +1,5 @@
 import pygame
+import math
 from pygame.locals import *
 
 class Monstre(pygame.sprite.Sprite):
@@ -18,8 +19,6 @@ class Monstre(pygame.sprite.Sprite):
         # Mesure de la taille de l'image
         self.taille= self.image.get_size()
 
-        # Coordonnées du monstre dans le plan
-        self.taille= self.image.get_rect()
         # Position générale
         self.rect = self.image.get_rect()
         # Position du centre
@@ -28,6 +27,7 @@ class Monstre(pygame.sprite.Sprite):
         # # # # # # # # # #
         self.modedeplacement="D"
         # Position de naissance
+        self.compteur=0
         self.naissance = 0
         self.etoile=False
 
@@ -37,7 +37,6 @@ class Monstre(pygame.sprite.Sprite):
             self.rect.x -=5
         elif self.modedeplacement == "S":
             self.compteur += 50
-            self.rect.x = self.compteur / 10 %1600
+            self.rect.x = 1280-(self.compteur / 10 %1600)
             self.rect.y = math.sin(self.compteur / 10 % 1600 / 50)*100 + self.naissance
-        elif self.modedeplacement == "R":
-            ##a voir plus tard
+
