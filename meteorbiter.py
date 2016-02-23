@@ -141,6 +141,7 @@ while not arret:
                     nombretir = 3
                 elif objet.rond:
                     perforant = True
+                explosion(objet.rect.x,objet.rect.y) #Test d'explosiooon
                 objet.kill
 
     # Les bonus sont actifs pendant 15s (soit 15000ms), au dela, tout retourne dans l'ordre
