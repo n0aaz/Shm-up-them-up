@@ -5,6 +5,7 @@ import random
 import vaisseau
 import tir
 import bonus
+import monstre
 
 # Initialisation de pygame
 pygame.init()
@@ -21,6 +22,7 @@ liste_explosion = pygame.sprite.Group()
 liste_fond = pygame.sprite.Group()
 liste_bonus = pygame.sprite.Group()
 liste_joueur = pygame.sprite.Group()
+liste_monstre = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -38,6 +40,8 @@ heuredeces = 0
 delaibonus = 0
 nombretir = 1
 perforant = False
+
+
 
 
 # Fonction/animation explosion lors de la mort du vaisseau
@@ -96,6 +100,8 @@ while not arret:
         # On tire avec le clic de la souris
         elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant)
+
+
 
         elif event.type == pygame.KEYDOWN:
             # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
@@ -203,3 +209,17 @@ while not arret:
     clock.tick(60)
 
 pygame.quit()
+
+
+
+
+"""
+
+    # Initialisation du monstre
+    for a in range(1,5):
+        filsdepute= monstre.Monstre()
+        filsdepute.modedeplacement="S"
+        liste_tout.add(filsdepute)
+        liste_monstre.add(filsdepute)
+        filsdepute.naissance=hauteur/a
+"""
