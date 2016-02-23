@@ -73,7 +73,7 @@ while not arret:
             # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
             joueur.mort()
             explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-            heuredeces = int(pygame.time.get_ticks())
+            heuredeces = pygame.time.get_ticks()
 
     # Il faut laisser le joueur respirer après une mort :
     # Le vaisseau est totalement invisible pendant 2s (il a explosé)
