@@ -35,9 +35,8 @@ directions = ["N","S","E","O","NE","NO","SE","SO"]
 # Fonction/animation explosion lors de la mort du vaisseau
 def explosion(coor_x,coor_y):
 
-    joueur.mort()
     for a in range (8):
-        b= tir.Tir()
+        b= tir.Explosion()
         liste_explosion.add(b)
         b.modetir=directions[a]
 

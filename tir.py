@@ -1,7 +1,8 @@
 import pygame
 
 jaune = [222, 194, 39]
-rouge =  [255, 64, 0]
+rouge = [255, 64, 0]
+blanc = [255, 255, 255]
 
 class Tir(pygame.sprite.Sprite):
     """ Une classe réservée aux tirs . """
@@ -65,3 +66,12 @@ class Tirennemi(Tir):
         self.couleur = rouge
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
         self.ennemi = True
+
+"""Les explosions de vaisseau ressemblent à des tirs mais ne tuent rien, autant les différencier"""
+class Explosion(Tir):
+    def __init__(self):
+        super().__init__()
+        self.couleur = blanc
+        self.image = pygame.Surface([4, 4])
+        pygame.draw.ellipse(self.image, self.couleur, self.rect)
+        self.vitesse = 4
