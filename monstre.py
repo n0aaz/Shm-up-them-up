@@ -25,17 +25,19 @@ class Monstre(pygame.sprite.Sprite):
         # Position du centre
         self.centremonstre = [self.rect.x / 2, self.rect.y / 2 ]
 
-
         # # # # # # # # # #
         self.modedeplacement="D"
-
+        # Position de naissance
+        self.naissance = 0
         self.etoile=False
 
     def update(self):
         """Ce sera appelé à chaque image"""
         if self.modedeplacement == "D":
             self.rect.x -=5
-
-
-
-
+        elif self.modedeplacement == "S":
+            self.compteur += 50
+            self.rect.x = self.compteur / 10 %1600
+            self.rect.y = math.sin(self.compteur / 10 % 1600 / 50)*100 + self.naissance
+        elif self.modedeplacement == "R":
+            ##a voir plus tard
