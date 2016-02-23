@@ -25,6 +25,7 @@ class Tir(pygame.sprite.Sprite):
 
         # Petit interrupteur qui nous servira à savoir si c'est un tir de vaisseau ou de monstre
         self.ennemi = False
+        self.etoile = False
 
         self.vitesse = 12
 

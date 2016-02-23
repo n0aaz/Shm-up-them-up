@@ -63,7 +63,6 @@ class Vaisseau(pygame.sprite.Sprite):
 
         # On fait clignoter l'image du vaisseau en faisant varier la transparence de ce dernier
         transparence = self.image.get_alpha()
-        print(transparence)
         if self.apparition == True:
             transparence+=4
             if transparence > 255:
