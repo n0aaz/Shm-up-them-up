@@ -220,9 +220,9 @@ pygame.quit()
 
     # Initialisation du monstre
     for a in range(1,5):
-        filsdepute= monstre.Monstre()
-        filsdepute.modedeplacement="S"
-        liste_tout.add(filsdepute)
-        liste_monstre.add(filsdepute)
-        filsdepute.naissance=hauteur/a
+        vador= monstre.Monstre()
+        vador.modedeplacement="S"
+        liste_tout.add(vador)
+        liste_monstre.add(vador)
+        vador.naissance=hauteur/a
 """
