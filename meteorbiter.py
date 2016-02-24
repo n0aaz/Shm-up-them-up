@@ -45,7 +45,6 @@ score = 0
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
-
 def explosion(coor_x, coor_y):
     # différentes directions pour les tirs
     directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
@@ -116,6 +115,7 @@ while not arret:
                 vador.rect.x = largeur+10
                 tirer(vador.rect.x, vador.rect.y, 1, False, True)
 
+    # Collision entre le joueur et un tir ennemi
 
     for val in liste_tir_mechant :
 
@@ -128,11 +128,21 @@ while not arret:
 
                 # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
                 # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
-                """Penser a ajouter la collision joueur/monstre en plus"""
                 joueur.mort()
-                print(joueur.vie)
                 explosion(joueur.centrecanon[0], joueur.centrecanon[1])
             heuredeces = pygame.time.get_ticks()
+
+    # Collision entre le joueur et un ennemi
+    for col in liste_monstre :
+
+        liste_collision_vaisseau = pygame.sprite.spritecollide(col, liste_joueur, False)
+        for objet in liste_collision_vaisseau:
+            if not joueur.immunite :
+                col.kill()
+                joueur.mort()
+                explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+            heuredeces = pygame.time.get_ticks()
+
 #####################Evenements
 
     # Horloge rafraichie à chaque image
