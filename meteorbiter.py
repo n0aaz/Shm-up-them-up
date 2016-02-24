@@ -109,7 +109,7 @@ while not arret:
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
             for a in range(1, 5):
                 vador= monstre.Monstre()
-                vador.modedeplacement = "D"
+                vador.modedeplacement = "S"
                 liste_tout.add(vador)
                 liste_monstre.add(vador)
                 vador.rect.y = a*hauteur/5
@@ -128,6 +128,7 @@ while not arret:
 
                 # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
                 # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
+                """Penser a ajouter la collision joueur/monstre en plus"""
                 joueur.mort()
                 print(joueur.vie)
                 explosion(joueur.centrecanon[0], joueur.centrecanon[1])
