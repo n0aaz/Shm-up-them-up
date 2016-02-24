@@ -109,7 +109,7 @@ while not arret:
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
             for a in range(1, 5):
                 vador= monstre.Monstre()
-                vador.modedeplacement = "S"
+                vador.modedeplacement = "D"
                 liste_tout.add(vador)
                 liste_monstre.add(vador)
                 vador.rect.y = a*hauteur/5
