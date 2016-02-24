@@ -41,6 +41,7 @@ heuredeces = 0
 delaibonus = 0
 nombretir = 1
 perforant = False
+score = 0
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
@@ -187,7 +188,8 @@ while not arret:
                 explosion(objet.rect.x, objet.rect.y) #explosion
                 objet.kill
                 touche.kill()
-
+                score += 100
+                print(score)
 
 
         # Si il y a eu collision : le chronometre est lancé et l'effet est actif
