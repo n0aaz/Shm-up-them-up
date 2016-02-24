@@ -23,6 +23,7 @@ liste_fond = pygame.sprite.Group()
 liste_bonus = pygame.sprite.Group()
 liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
+liste_tir_mechant = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -68,9 +69,11 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
     for a in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
+                liste_tir_mechant.add(balle)
             else:
                 balle = tir.Tir()
                 balle.modetir = directions[a]
+                liste_tir.add(balle)
             if perforant:
                 balle.perforant = True
             # La balle est positionnée précisément sur le canon du vaisseau
@@ -80,7 +83,6 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
             # permettre le déplacement de tous les objets en meme temps et de vérifier
             # si il y a collision
             liste_tout.add(balle)
-            liste_tir.add(balle)
 
 # Génération aléatoire d'étoiles avant le démarrage du jeu
 for et in range(250):
@@ -166,6 +168,21 @@ while not arret:
     if temps - delaibonus > 15000:
         nombretir = 1
         perforant = False
+        # Détection des collisions entre le tir vaisseau vaisseau et le monstre
+    for touche in liste_tir :
+
+        # Spritecollide nous permet de prendre un objet d'un groupe
+        # si il est en collision avec le ou les objets mentionnés
+        liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, True)
+        for objet in liste_collision_monstre:
+                explosion(objet.rect.x, objet.rect.y) #explosion
+                objet.kill
+                touche.kill()
+
+
+
+        # Si il y a eu collision : le chronometre est lancé et l'effet est actif
+
 
 ###Resurrection du joueur
 
