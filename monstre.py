@@ -21,6 +21,7 @@ class Monstre(pygame.sprite.Sprite):
 
         # Position générale
         self.rect = self.image.get_rect()
+
         # Position du centre
         self.centremonstre = [self.rect.x / 2, self.rect.y / 2 ]
 

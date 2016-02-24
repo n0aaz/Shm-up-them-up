@@ -70,7 +70,7 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
                 balle = tir.Tirennemi()
             else:
                 balle = tir.Tir()
-            balle.modetir=directions[a]
+                balle.modetir=directions[a]
             if perforant:
                 balle.perforant=True
             # La balle est positionnée précisément sur le canon du vaisseau
@@ -103,7 +103,14 @@ while not arret:
         # On tire avec le clic de la souris
         elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
-
+            for a in range(1,5):
+                vador= monstre.Monstre()
+                vador.modedeplacement="D"
+                liste_tout.add(vador)
+                liste_monstre.add(vador)
+                vador.rect.y=a*hauteur/5
+                vador.rect.x=largeur+10
+                tirer(vador.rect.x,vador.rect.y,1,False,True)
 
 
         elif event.type == pygame.KEYDOWN:
