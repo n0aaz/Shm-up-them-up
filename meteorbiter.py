@@ -41,10 +41,9 @@ delaibonus = 0
 nombretir = 1
 perforant = False
 
-
-
-
 # Fonction/animation explosion lors de la mort du vaisseau
+
+
 def explosion(coor_x, coor_y):
     # différentes directions pour les tirs
     directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
@@ -62,6 +61,7 @@ def explosion(coor_x, coor_y):
 # Fonction tirer avec les coordonnées du point de départ, le nombre de tirs
 # la direction du tir, et l'attribut perforant activé par un bonus
 
+
 def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
     directions = ["E", "NE", "SE"]
 
@@ -70,9 +70,9 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
                 balle = tir.Tirennemi()
             else:
                 balle = tir.Tir()
-                balle.modetir=directions[a]
+                balle.modetir = directions[a]
             if perforant:
-                balle.perforant=True
+                balle.perforant = True
             # La balle est positionnée précisément sur le canon du vaisseau
             balle.rect.x = coor_x
             balle.rect.y = coor_y
@@ -85,12 +85,13 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
 # Génération aléatoire d'étoiles avant le démarrage du jeu
 for et in range(250):
     etoile = tir.Etoiles()
-    etoile.rect.x = random.randrange(0,largeur)
-    etoile.rect.y = random.randrange(0,hauteur)
+    etoile.rect.x = random.randrange(0, largeur)
+    etoile.rect.y = random.randrange(0, hauteur)
     liste_fond.add(etoile)
     liste_tout.add(etoile)
 
 ###############################################Programme principal######################################################
+
 while not arret:
     # On stoppe le programme si l'utilisateur quitte
 
@@ -103,14 +104,14 @@ while not arret:
         # On tire avec le clic de la souris
         elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
             tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
-            for a in range(1,5):
+            for a in range(1, 5):
                 vador= monstre.Monstre()
-                vador.modedeplacement="D"
+                vador.modedeplacement = "D"
                 liste_tout.add(vador)
                 liste_monstre.add(vador)
-                vador.rect.y=a*hauteur/5
-                vador.rect.x=largeur+10
-                tirer(vador.rect.x,vador.rect.y,1,False,True)
+                vador.rect.y = a*hauteur/5
+                vador.rect.x = largeur+10
+                tirer(vador.rect.x, vador.rect.y, 1, False, True)
 
 
         elif event.type == pygame.KEYDOWN:
@@ -127,7 +128,7 @@ while not arret:
 ### Gestion de bonus aléatoire
 
     # Une chance sur 1000 à chaque image de faire naitre un bonus
-    loterie = random.randrange(0,1000)
+    loterie = random.randrange(0, 1000)
 
     # Le bonus apparait aléatoirement en haut de l'écran
     if loterie == 3:
@@ -135,12 +136,12 @@ while not arret:
         quelbonus = random.randrange(1, 3)
         if quelbonus == 1:
             bon = bonus.Bonusplus()
-            bon.naissance= random.randrange(0,largeur)
+            bon.naissance= random.randrange(0, largeur)
             liste_tout.add(bon)
             liste_bonus.add(bon)
         elif quelbonus == 2:
             bon = bonus.Bonusrond()
-            bon.naissance= random.randrange(0,largeur)
+            bon.naissance= random.randrange(0, largeur)
             liste_tout.add(bon)
             liste_bonus.add(bon)
 
@@ -148,7 +149,8 @@ while not arret:
     for bonbon in liste_bonus:
         # Pas de bonus si le joueur est immune (donc mort)
         if not joueur.immunite:
-            # Spritecollide nous permet de prendre un objet d'un groupe si il est en collision avec le ou les objets mentionnés
+            # Spritecollide nous permet de prendre un objet d'un groupe
+            # si il est en collision avec le ou les objets mentionnés
             liste_collision_bonus = pygame.sprite.spritecollide(joueur, liste_bonus, True)
             # Si il y a eu collision : le chronometre est lancé et l'effet est actif
             for objet in liste_collision_bonus:
@@ -157,16 +159,15 @@ while not arret:
                     nombretir = 3
                 elif objet.rond:
                     perforant = True
-                explosion(objet.rect.x,objet.rect.y) #Test d'explosiooon
+                explosion(objet.rect.x, objet.rect.y) #Test d'explosiooon
                 objet.kill
 
     # Les bonus sont actifs pendant 15s (soit 15000ms), au dela, tout retourne dans l'ordre
-    if temps - delaibonus > 15000 :
+    if temps - delaibonus > 15000:
         nombretir = 1
         perforant = False
 
 ###Resurrection du joueur
-
 
     # Il faut laisser le joueur respirer après une mort :
     # Le vaisseau est totalement invisible pendant 2s (il a explosé)
@@ -221,15 +222,3 @@ while not arret:
 pygame.quit()
 
 
-
-
-"""
-
-    # Initialisation du monstre
-    for a in range(1,5):
-        vador= monstre.Monstre()
-        vador.modedeplacement="S"
-        liste_tout.add(vador)
-        liste_monstre.add(vador)
-        vador.naissance=hauteur/a
-"""
