@@ -116,11 +116,20 @@ while not arret:
                 tirer(vador.rect.x, vador.rect.y, 1, False, True)
 
 
-        elif event.type == pygame.KEYDOWN:
-            # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
-            # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
-            joueur.mort()
-            explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+    for val in liste_tir_mechant :
+
+        # Spritecollide nous permet de prendre un objet d'un groupe
+        # si il est en collision avec le ou les objets mentionnés
+        liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
+        for objet in liste_collision_tir_mechant:
+            if not joueur.immunite :
+                val.kill()
+
+                # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
+                # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
+                joueur.mort()
+                print(joueur.vie)
+                explosion(joueur.centrecanon[0], joueur.centrecanon[1])
             heuredeces = pygame.time.get_ticks()
 #####################Evenements
 
