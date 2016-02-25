@@ -98,6 +98,7 @@ for et in range(250):
 
 while not arret:
     # On stoppe le programme si l'utilisateur quitte
+    nopause = False
 
     #if etatactuel == "Menu":
     #Travaux en cours#
@@ -107,6 +108,15 @@ while not arret:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 arret = True
+
+            # On met le programme en pause si une touche quelconque est appuyée
+            elif event.type == pygame.KEYDOWN:
+                while not nopause:
+                    #print("pause")
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN:
+                            nopause = True
+
 
             # On tire avec le clic de la souris
             elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
