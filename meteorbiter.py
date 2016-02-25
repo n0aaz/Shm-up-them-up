@@ -6,6 +6,7 @@ import vaisseau
 import tir
 import bonus
 import monstre
+#from Menu import texte_menu
 
 # Initialisation de pygame
 pygame.init()
@@ -29,6 +30,7 @@ liste_tir_mechant = pygame.sprite.Group()
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(False)
 
+etatactuel = "Jeu"
 arret = False
 
 # Initialisation du vaisseau du joueur
@@ -97,166 +99,169 @@ for et in range(250):
 while not arret:
     # On stoppe le programme si l'utilisateur quitte
 
+    #if etatactuel == "Menu":
+    #Travaux en cours#
 
-######################Evenements
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            arret = True
+    if etatactuel == "Jeu":
+    ######################Evenements
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                arret = True
 
-        # On tire avec le clic de la souris
-        elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
-            tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
-            for a in range(1, 5):
-                vador= monstre.Monstre()
-                vador.modedeplacement = "D"
-                liste_tout.add(vador)
-                liste_monstre.add(vador)
-                vador.rect.y = a*hauteur/5
-                vador.rect.x = largeur+10
-                tirer(vador.rect.x, vador.rect.y, 1, False, True)
+            # On tire avec le clic de la souris
+            elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
+                tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
+                for a in range(1, 5):
+                    vador= monstre.Monstre()
+                    vador.modedeplacement = "D"
+                    liste_tout.add(vador)
+                    liste_monstre.add(vador)
+                    vador.rect.y = a*hauteur/5
+                    vador.rect.x = largeur+10
+                    tirer(vador.rect.x, vador.rect.y, 1, False, True)
 
-    # Collision entre le joueur et un tir ennemi
+        # Collision entre le joueur et un tir ennemi
 
-    for val in liste_tir_mechant :
+        for val in liste_tir_mechant :
 
-        # Spritecollide nous permet de prendre un objet d'un groupe
-        # si il est en collision avec le ou les objets mentionnés
-        liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
-        for objet in liste_collision_tir_mechant:
-            if not joueur.immunite :
-                val.kill()
-
-                # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
-                # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
-                joueur.mort()
-                explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-            heuredeces = pygame.time.get_ticks()
-
-    # Collision entre le joueur et un ennemi
-    for col in liste_monstre :
-
-        liste_collision_vaisseau = pygame.sprite.spritecollide(col, liste_joueur, False)
-        for objet in liste_collision_vaisseau:
-            if not joueur.immunite :
-                col.kill()
-                joueur.mort()
-                explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-            heuredeces = pygame.time.get_ticks()
-
-#####################Evenements
-
-    # Horloge rafraichie à chaque image
-    temps = pygame.time.get_ticks()
-
-### Gestion de bonus aléatoire
-
-    # Une chance sur 1000 à chaque image de faire naitre un bonus
-    loterie = random.randrange(0, 1000)
-
-    # Le bonus apparait aléatoirement en haut de l'écran
-    if loterie == 3:
-        #Tirage au sort pour savoir quel bonus va sortir
-        quelbonus = random.randrange(1, 3)
-        if quelbonus == 1:
-            bon = bonus.Bonusplus()
-            bon.naissance= random.randrange(0, largeur)
-            liste_tout.add(bon)
-            liste_bonus.add(bon)
-        elif quelbonus == 2:
-            bon = bonus.Bonusrond()
-            bon.naissance= random.randrange(0, largeur)
-            liste_tout.add(bon)
-            liste_bonus.add(bon)
-
-    # Détection des collisions entre le vaisseau et le bonus
-    for bonbon in liste_bonus:
-        # Pas de bonus si le joueur est immune (donc mort)
-        if not joueur.immunite:
             # Spritecollide nous permet de prendre un objet d'un groupe
             # si il est en collision avec le ou les objets mentionnés
-            liste_collision_bonus = pygame.sprite.spritecollide(joueur, liste_bonus, True)
+            liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
+            for objet in liste_collision_tir_mechant:
+                if not joueur.immunite :
+                    val.kill()
+
+                    # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
+                    # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
+                    joueur.mort()
+                    explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+                heuredeces = pygame.time.get_ticks()
+
+        # Collision entre le joueur et un ennemi
+        for col in liste_monstre :
+
+            liste_collision_vaisseau = pygame.sprite.spritecollide(col, liste_joueur, False)
+            for objet in liste_collision_vaisseau:
+                if not joueur.immunite :
+                    col.kill()
+                    joueur.mort()
+                    explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+                heuredeces = pygame.time.get_ticks()
+
+    #####################Evenements
+
+        # Horloge rafraichie à chaque image
+        temps = pygame.time.get_ticks()
+
+    ### Gestion de bonus aléatoire
+
+        # Une chance sur 1000 à chaque image de faire naitre un bonus
+        loterie = random.randrange(0, 1000)
+
+        # Le bonus apparait aléatoirement en haut de l'écran
+        if loterie == 3:
+            #Tirage au sort pour savoir quel bonus va sortir
+            quelbonus = random.randrange(1, 3)
+            if quelbonus == 1:
+                bon = bonus.Bonusplus()
+                bon.naissance= random.randrange(0, largeur)
+                liste_tout.add(bon)
+                liste_bonus.add(bon)
+            elif quelbonus == 2:
+                bon = bonus.Bonusrond()
+                bon.naissance= random.randrange(0, largeur)
+                liste_tout.add(bon)
+                liste_bonus.add(bon)
+
+        # Détection des collisions entre le vaisseau et le bonus
+        for bonbon in liste_bonus:
+            # Pas de bonus si le joueur est immune (donc mort)
+            if not joueur.immunite:
+                # Spritecollide nous permet de prendre un objet d'un groupe
+                # si il est en collision avec le ou les objets mentionnés
+                liste_collision_bonus = pygame.sprite.spritecollide(joueur, liste_bonus, True)
+                # Si il y a eu collision : le chronometre est lancé et l'effet est actif
+                for objet in liste_collision_bonus:
+                    delaibonus = pygame.time.get_ticks()
+                    if objet.plus:
+                        nombretir = 3
+                    elif objet.rond:
+                        perforant = True
+                    explosion(objet.rect.x, objet.rect.y) #Test d'explosiooon
+                    objet.kill
+
+        # Les bonus sont actifs pendant 15s (soit 15000ms), au dela, tout retourne dans l'ordre
+        if temps - delaibonus > 15000:
+            nombretir = 1
+            perforant = False
+            # Détection des collisions entre le tir vaisseau vaisseau et le monstre
+        for touche in liste_tir :
+
+            # Spritecollide nous permet de prendre un objet d'un groupe
+            # si il est en collision avec le ou les objets mentionnés
+            liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, True)
+            for objet in liste_collision_monstre:
+                    explosion(objet.rect.x, objet.rect.y) #explosion
+                    objet.kill
+                    touche.kill()
+                    score += 100
+                    print(score)
+
+
             # Si il y a eu collision : le chronometre est lancé et l'effet est actif
-            for objet in liste_collision_bonus:
-                delaibonus = pygame.time.get_ticks()
-                if objet.plus:
-                    nombretir = 3
-                elif objet.rond:
-                    perforant = True
-                explosion(objet.rect.x, objet.rect.y) #Test d'explosiooon
-                objet.kill
-
-    # Les bonus sont actifs pendant 15s (soit 15000ms), au dela, tout retourne dans l'ordre
-    if temps - delaibonus > 15000:
-        nombretir = 1
-        perforant = False
-        # Détection des collisions entre le tir vaisseau vaisseau et le monstre
-    for touche in liste_tir :
-
-        # Spritecollide nous permet de prendre un objet d'un groupe
-        # si il est en collision avec le ou les objets mentionnés
-        liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, True)
-        for objet in liste_collision_monstre:
-                explosion(objet.rect.x, objet.rect.y) #explosion
-                objet.kill
-                touche.kill()
-                score += 100
-                print(score)
 
 
-        # Si il y a eu collision : le chronometre est lancé et l'effet est actif
+    ###Resurrection du joueur
+
+        # Il faut laisser le joueur respirer après une mort :
+        # Le vaisseau est totalement invisible pendant 2s (il a explosé)
+        # Pendant 5s il réapparait en clignotant, pour indiquer au joueur qu'il doit se préparer
+
+        if temps - heuredeces > 2500 and temps - heuredeces < 7500 and joueur.immunite:
+            joueur.cligno()
+            joueur.rect.x = largeur/20
+            joueur.rect.y = pygame.mouse.get_pos()[1]
+            pygame.mouse.set_pos([joueur.rect.x, joueur.rect.y])
+        elif temps - heuredeces > 7500:
+            joueur.immunite = False
+            joueur.image.set_alpha(255)
+
+    ###Destruction/recyclage des objets inutiles
 
 
-###Resurrection du joueur
-
-    # Il faut laisser le joueur respirer après une mort :
-    # Le vaisseau est totalement invisible pendant 2s (il a explosé)
-    # Pendant 5s il réapparait en clignotant, pour indiquer au joueur qu'il doit se préparer
-
-    if temps - heuredeces > 2500 and temps - heuredeces < 7500 and joueur.immunite:
-        joueur.cligno()
-        joueur.rect.x = largeur/20
-        joueur.rect.y = pygame.mouse.get_pos()[1]
-        pygame.mouse.set_pos([joueur.rect.x, joueur.rect.y])
-    elif temps - heuredeces > 7500:
-        joueur.immunite = False
-        joueur.image.set_alpha(255)
-
-###Destruction/recyclage des objets inutiles
-
-
-    # On fait disparaitre les objets lorsqu'ils ne sont plus visibles , gain de mémoire
-    for objet in liste_tout:
-        if objet.rect.x > largeur+20:
-            objet.kill()
-        elif objet.rect.y > hauteur+20:
-            objet.kill()
-        elif objet.rect.x < -20:
-            # Les étoiles ne disparaissent pas, elles reviennent de l'autre côté: recyclage
-            if objet.etoile:
-                objet.rect.y = random.randrange(0,hauteur)
-                objet.rect.x = largeur + 20
-            else:
+        # On fait disparaitre les objets lorsqu'ils ne sont plus visibles , gain de mémoire
+        for objet in liste_tout:
+            if objet.rect.x > largeur+20:
                 objet.kill()
-        elif objet.rect.y < -20:
-            objet.kill()
+            elif objet.rect.y > hauteur+20:
+                objet.kill()
+            elif objet.rect.x < -20:
+                # Les étoiles ne disparaissent pas, elles reviennent de l'autre côté: recyclage
+                if objet.etoile:
+                    objet.rect.y = random.randrange(0,hauteur)
+                    objet.rect.x = largeur + 20
+                else:
+                    objet.kill()
+            elif objet.rect.y < -20:
+                objet.kill()
 
-    # On appelle la fonction update de tous les objets en meme temps
-    # pour les déplacer tous en même temps
-    liste_tout.update()
+        # On appelle la fonction update de tous les objets en meme temps
+        # pour les déplacer tous en même temps
+        liste_tout.update()
 
-    # Nettoyage de l'écran
-    fenetre.fill([0, 0, 0])
+        # Nettoyage de l'écran
+        fenetre.fill([0, 0, 0])
 
-    # Rendu de tous les objets
-    liste_tout.draw(fenetre)
+        # Rendu de tous les objets
+        liste_tout.draw(fenetre)
 
-    # Affichage de tout
-    pygame.display.flip()
+        # Affichage de tout
+        pygame.display.flip()
 
-    # Quasiment tous les écrans sont limités à 60hz de rafraichissement
-    # Pourquoi vouloir aller plus vite?
-    # Limite de rafraichissement à 60 fois par seconde
-    clock.tick(60)
+        # Quasiment tous les écrans sont limités à 60hz de rafraichissement
+        # Pourquoi vouloir aller plus vite?
+        # Limite de rafraichissement à 60 fois par seconde
+        clock.tick(60)
 
 pygame.quit()
 
