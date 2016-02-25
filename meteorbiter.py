@@ -209,11 +209,12 @@ while not arret:
 
             # Spritecollide nous permet de prendre un objet d'un groupe
             # si il est en collision avec le ou les objets mentionnés
-            liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, True)
+            liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
             for objet in liste_collision_monstre:
                     explosion(objet.rect.x, objet.rect.y) #explosion
-                    objet.kill
-                    touche.kill()
+                    objet.kill()
+                    if not perforant:
+                        touche.kill()
                     score += 100
                     print(score)
 
