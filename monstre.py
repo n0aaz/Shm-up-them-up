@@ -40,13 +40,5 @@ class Monstre(pygame.sprite.Sprite):
             self.compteur += 50
             self.rect.x = 1280-(self.compteur / 10 %1600)
             self.rect.y = math.sin(self.compteur / 10 % 1600 / 50)*100 + self.naissance
-        elif self.modedeplacement == "R" : ##Ne fonctionne pas poru le moment,
-            self.rect.x -=5
-            self.rect.y +=2
-            if self.rect.x - 5 <0 or self.rect.x +5 >720 :
-                self.rect.x +=5
-            if self.rect.y -2 <0 or self.rect.y +2 >720 :
-                self.rect.y -=2
-
 
 
