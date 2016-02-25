@@ -45,7 +45,7 @@ screen = pygame.display.set_mode((1080,720))
 menu_font = pygame.font.Font("Minecraft.ttf", 40)
 #Configuration des différentes options du menu
 options = [texte_menu("JOUER", (300, 205)), texte_menu("OPTIONS", (300, 255)),
-           texte_menu("CREDITS", (300, 305))]
+           texte_menu("MEILLEURS SCORES", (300, 305)),texte_menu("CREDITS", (300, 355))]
 while True:
     pygame.event.pump()
     screen.fill((0, 0, 0))
