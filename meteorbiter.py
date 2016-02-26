@@ -6,7 +6,6 @@ import vaisseau
 import tir
 import bonus
 import monstre
-#from Menu import texte_menu
 
 # Initialisation de pygame
 pygame.init()
@@ -47,13 +46,14 @@ score = 0
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
+
 def explosion(coor_x, coor_y):
     # différentes directions pour les tirs
     directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
-    for a in range(len(directions)):
+    for petitcompteur in range(len(directions)):
         b = tir.Explosion()
         liste_explosion.add(b)
-        b.modetir = directions[a]
+        b.modetir = directions[petitcompteur]
 
     for debris in liste_explosion:
         debris.rect.x = coor_x
@@ -65,18 +65,17 @@ def explosion(coor_x, coor_y):
 # la direction du tir, et l'attribut perforant activé par un bonus
 
 
-def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
+def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
     directions = ["E", "NE", "SE"]
 
-    for a in range(nbtir):
+    for numerodirection in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
-                #liste_tir_mechant.add(balle)
             else:
                 balle = tir.Tir()
-                balle.modetir = directions[a]
+                balle.modetir = directions[numerodirection]
             liste_tir.add(balle)
-            if perforant:
+            if balles_perforantes:
                 balle.perforant = True
             # La balle est positionnée précisément sur le canon du vaisseau
             balle.rect.x = coor_x
@@ -112,43 +111,41 @@ while not arret:
             # On met le programme en pause si une touche quelconque est appuyée
             elif event.type == pygame.KEYDOWN:
                 while not nopause:
-                    #print("pause")
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN:
                             nopause = True
 
-
             # On tire avec le clic de la souris
-            elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
-                tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
-                mode=random.randrange(1,4)
-                if mode == 1 :
-                    for a in range(1, 5) :
-                        vador= monstre.Monstre()
+            elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
+                tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
+                mode = random.randrange(1, 4)
+                if mode == 1:
+                    for a in range(1, 5):
+                        vador = monstre.Monstre()
                         vador.modedeplacement = "D"
                         liste_tout.add(vador)
                         liste_monstre.add(vador)
                         vador.rect.y = a*hauteur/5
                         vador.rect.x = largeur+10
                         tirer(vador.rect.x, vador.rect.y, 1, False, True)
-                if mode == 2 :
-                    for a in range(1, 10) :
-                        vador= monstre.Monstre()
+                if mode == 2:
+                    for a in range(1, 10):
+                        vador = monstre.Monstre()
                         vador.modedeplacement = "D"
                         liste_tout.add(vador)
                         liste_monstre.add(vador)
                         vador.rect.y = a*hauteur/10
                         vador.rect.x = largeur+10
-                if mode == 3 :
-                    vador= monstre.Monstre()
+                if mode == 3:
+                    vador = monstre.Monstre()
                     vador.modedeplacement = "S"
                     liste_tout.add(vador)
                     liste_monstre.add(vador)
                     vador.naissance = hauteur/2
 
-        liste_detruits.add(liste_tir,liste_monstre,liste_bonus)
+        liste_detruits.add(liste_tir, liste_monstre, liste_bonus)
 
-    #######COLLISIONS
+    ###Collisions
 
         # Collision entre le joueur et : Ennemis, tirs ennemis, bonus
         for adetruire in liste_detruits:
@@ -173,8 +170,8 @@ while not arret:
                         adetruire.kill()
 
         #Collisions entre une balle alliée et un ennemi
-        for touche in liste_tir :
-            if not touche.ennemi :
+        for touche in liste_tir:
+            if not touche.ennemi:
                 # Spritecollide nous permet de prendre un objet d'un groupe
                 # si il est en collision avec le ou les objets mentionnés
                 liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
@@ -202,12 +199,12 @@ while not arret:
             quelbonus = random.randrange(1, 3)
             if quelbonus == 1:
                 bon = bonus.Bonusplus()
-                bon.naissance= random.randrange(0, largeur)
+                bon.naissance = random.randrange(0, largeur)
                 liste_tout.add(bon)
                 liste_bonus.add(bon)
             elif quelbonus == 2:
                 bon = bonus.Bonusrond()
-                bon.naissance= random.randrange(0, largeur)
+                bon.naissance = random.randrange(0, largeur)
                 liste_tout.add(bon)
                 liste_bonus.add(bon)
 
@@ -215,12 +212,6 @@ while not arret:
         if temps - delaibonus > 15000:
             nombretir = 1
             perforant = False
-            # Détection des collisions entre le tir du vaisseau et le monstre
-
-
-
-            # Si il y a eu collision : le chronometre est lancé et l'effet est actif
-
 
     ###Resurrection du joueur
 
@@ -249,12 +240,14 @@ while not arret:
             elif objet.rect.x < -20:
                 # Les étoiles ne disparaissent pas, elles reviennent de l'autre côté: recyclage
                 if objet.etoile:
-                    objet.rect.y = random.randrange(0,hauteur)
+                    objet.rect.y = random.randrange(0, hauteur)
                     objet.rect.x = largeur + 20
                 else:
                     objet.kill()
             elif objet.rect.y < -20:
                 objet.kill()
+
+    ###Commandes communes
 
         # On appelle la fonction update de tous les objets en meme temps
         # pour les déplacer tous en même temps
@@ -275,5 +268,3 @@ while not arret:
         clock.tick(60)
 
 pygame.quit()
-
-
