@@ -10,6 +10,7 @@ class Tir(pygame.sprite.Sprite):
     def __init__(self):
         # On appelle les propriétés des sprite dont découle notre classe
         super().__init__()
+        self.bonus = False
 
         # On va générer notre balle tirée, un ovale jaune de la taille donnée
         self.image = pygame.Surface([12, 6])

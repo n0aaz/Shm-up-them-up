@@ -10,6 +10,8 @@ class Bonusplus(pygame.sprite.Sprite):
     def __init__(self):
         # On appelle les propriétés des sprite dont découle notre classe
         super().__init__()
+        self.bonus = True
+        self.ennemi = False
 
         # Génération du bonus
         self.image = pygame.image.load("bonusplus.png").convert()

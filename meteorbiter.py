@@ -24,6 +24,7 @@ liste_fond = pygame.sprite.Group()
 liste_bonus = pygame.sprite.Group()
 liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
+liste_detruits = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -145,33 +146,45 @@ while not arret:
                     liste_monstre.add(vador)
                     vador.naissance = hauteur/2
 
+        liste_detruits.add(liste_tir,liste_monstre,liste_bonus)
 
-        # Collision entre le joueur et un tir ennemi
+    #######COLLISIONS
 
-        for val in liste_tir:
-            if val.ennemi:
-                # Spritecollide nous permet de prendre un objet d'un groupe
-                # si il est en collision avec le ou les objets mentionnés
-                liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
-                for objet in liste_collision_tir_mechant:
-                    if not joueur.immunite :
-                        val.kill()
-
+        # Collision entre le joueur et : Ennemis, tirs ennemis, bonus
+        for adetruire in liste_detruits:
+            liste_collision_detruits = pygame.sprite.spritecollide(adetruire, liste_joueur, False)
+            for detruit in liste_collision_detruits:
+                if adetruire.ennemi:
+                    if not joueur.immunite:
+                        adetruire.kill()
                         # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
                         # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
                         joueur.mort()
                         explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-                    heuredeces = pygame.time.get_ticks()
+                        heuredeces = pygame.time.get_ticks()
+                elif adetruire.bonus:
+                    if not joueur.immunite:
+                        delaibonus = pygame.time.get_ticks()
+                        if adetruire.plus:
+                            nombretir = 3
+                        elif adetruire.rond:
+                            perforant = True
+                        explosion(adetruire.rect.x, adetruire.rect.y) #Test d'explosiooon
+                        adetruire.kill()
 
-        # Collision entre le joueur et un ennemi
-        for col in liste_monstre :
-            liste_collision_vaisseau = pygame.sprite.spritecollide(col, liste_joueur, False)
-            for objet in liste_collision_vaisseau:
-                if not joueur.immunite :
-                    col.kill()
-                    joueur.mort()
-                    explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-                heuredeces = pygame.time.get_ticks()
+        #Collisions entre une balle alliée et un ennemi
+        for touche in liste_tir :
+            if not touche.ennemi :
+                # Spritecollide nous permet de prendre un objet d'un groupe
+                # si il est en collision avec le ou les objets mentionnés
+                liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
+                for objet in liste_collision_monstre:
+                        explosion(objet.rect.x, objet.rect.y) #explosion
+                        objet.kill()
+                        if not perforant:
+                            touche.kill()
+                        score += 100
+                        print(score)
 
     #####################Evenements
 
@@ -198,41 +211,12 @@ while not arret:
                 liste_tout.add(bon)
                 liste_bonus.add(bon)
 
-        # Détection des collisions entre le vaisseau et le bonus
-        for bonbon in liste_bonus:
-            # Pas de bonus si le joueur est immune (donc mort)
-            if not joueur.immunite:
-                # Spritecollide nous permet de prendre un objet d'un groupe
-                # si il est en collision avec le ou les objets mentionnés
-                liste_collision_bonus = pygame.sprite.spritecollide(joueur, liste_bonus, True)
-                # Si il y a eu collision : le chronometre est lancé et l'effet est actif
-                for objet in liste_collision_bonus:
-                    delaibonus = pygame.time.get_ticks()
-                    if objet.plus:
-                        nombretir = 3
-                    elif objet.rond:
-                        perforant = True
-                    explosion(objet.rect.x, objet.rect.y) #Test d'explosiooon
-                    objet.kill
-
         # Les bonus sont actifs pendant 15s (soit 15000ms), au dela, tout retourne dans l'ordre
         if temps - delaibonus > 15000:
             nombretir = 1
             perforant = False
             # Détection des collisions entre le tir du vaisseau et le monstre
 
-        for touche in liste_tir :
-            if not touche.ennemi :
-                # Spritecollide nous permet de prendre un objet d'un groupe
-                # si il est en collision avec le ou les objets mentionnés
-                liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
-                for objet in liste_collision_monstre:
-                        explosion(objet.rect.x, objet.rect.y) #explosion
-                        objet.kill()
-                        if not perforant:
-                            touche.kill()
-                        score += 100
-                        print(score)
 
 
             # Si il y a eu collision : le chronometre est lancé et l'effet est actif

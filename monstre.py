@@ -16,6 +16,9 @@ class Monstre(pygame.sprite.Sprite):
 
         # # # # # # # # # #
 
+        self.ennemi = True
+        self.bonus = False
+
         # Mesure de la taille de l'image
         self.taille= self.image.get_size()
 
