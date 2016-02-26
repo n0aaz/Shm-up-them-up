@@ -5,6 +5,7 @@ import math
 jaune = [222, 194, 39]
 noir = [0, 0, 0]
 
+
 class Bonusplus(pygame.sprite.Sprite):
     """ Une classe réservée aux tirs . """
     def __init__(self):
@@ -30,8 +31,9 @@ class Bonusplus(pygame.sprite.Sprite):
         """ Déplacement """
         # Déplacement sinusoïdal
         self.compteur += 50
-        self.rect.y = self.compteur / 10 %1600
+        self.rect.y = self.compteur / 10 % 1600
         self.rect.x = math.sin(self.compteur / 10 % 1600 / 100)*200 + self.naissance
+
 
 class Bonusrond(Bonusplus):
     def __init__(self):
@@ -41,4 +43,3 @@ class Bonusrond(Bonusplus):
 
         self.rond = True
         self.plus = False
-

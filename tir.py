@@ -5,6 +5,7 @@ rouge = [255, 64, 0]
 blanc = [255, 255, 255]
 gris = [128, 128, 128]
 
+
 class Tir(pygame.sprite.Sprite):
     """ Une classe réservée aux tirs . """
     def __init__(self):
@@ -63,6 +64,7 @@ class Tir(pygame.sprite.Sprite):
             self.rect.x -= self.vitesse
             self.rect.y -= self.vitesse
 
+
 """Le tir des ennemis aura les memes caractéristiques que le tir allié mais sera rouge """
 class Tirennemi(Tir):
     def __init__(self):
@@ -72,6 +74,7 @@ class Tirennemi(Tir):
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
         self.ennemi = True
 
+
 """Les explosions de vaisseau ressemblent à des tirs mais ne tuent rien, autant les différencier"""
 class Explosion(Tir):
     def __init__(self):
@@ -80,6 +83,7 @@ class Explosion(Tir):
         self.image = pygame.Surface([4, 4])
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
         self.vitesse = 4
+
 
 """Les etoiles sont à part, elles se déplacent toujours dans le sens contraire du joueur, et plus lentement
 on est dans l'espace quand meme, la perspective existe toujours, même en 2D :) """

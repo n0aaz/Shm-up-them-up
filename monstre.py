@@ -2,9 +2,10 @@ import pygame
 import math
 from pygame.locals import *
 
+
 class Monstre(pygame.sprite.Sprite):
-    """On crée une classe appelée Monstre. Elle contient les caractéristiques SPRITE de Pygame pour avoir des monstres mobiles sur
-        un fond fixe"""
+    """On crée une classe appelée Monstre. Elle contient les caractéristiques SPRITE de Pygame pour
+    avoir des monstres mobiles sur un fond fixe"""
     def __init__(self):
         """Construction de la classe"""
         # Appel de la fonction de création de la classe
@@ -20,28 +21,26 @@ class Monstre(pygame.sprite.Sprite):
         self.bonus = False
 
         # Mesure de la taille de l'image
-        self.taille= self.image.get_size()
+        self.taille = self.image.get_size()
 
         # Position générale
         self.rect = self.image.get_rect()
 
         # Position du centre
-        self.centremonstre = [self.rect.x / 2, self.rect.y / 2 ]
+        self.centremonstre = [self.rect.x / 2, self.rect.y / 2]
 
         # # # # # # # # # #
-        self.modedeplacement="D"
+        self.modedeplacement = "D"
         # Position de naissance
-        self.compteur=0
+        self.compteur = 0
         self.naissance = 0
-        self.etoile=False
+        self.etoile = False
 
     def update(self):
         """Ce sera appelé à chaque image"""
         if self.modedeplacement == "D":
-            self.rect.x -=5
+            self.rect.x -= 5
         elif self.modedeplacement == "S":
             self.compteur += 50
-            self.rect.x = 1280-(self.compteur / 10 %1600)
+            self.rect.x = 1280-(self.compteur / 10 % 1600)
             self.rect.y = math.sin(self.compteur / 10 % 1600 / 50)*100 + self.naissance
-
-

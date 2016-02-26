@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 
 class Vaisseau(pygame.sprite.Sprite):
@@ -18,7 +17,7 @@ class Vaisseau(pygame.sprite.Sprite):
         self.image.set_colorkey([255, 255, 255])
 
         # Taille de l'image du vaisseau, pour faciliter les calculs
-        self.taille= self.image.get_size()
+        self.taille = self.image.get_size()
 
         # Appel des coordonnées (taille) de l'image pour en faire les coordonnées du vaisseau
         self.rect = self.image.get_rect()
@@ -44,7 +43,7 @@ class Vaisseau(pygame.sprite.Sprite):
         self.centrecanon = [self.rect.x + self.taille[0] / 2 + 15, self.rect.y + self.taille[1] / 2 - 1]
 
         # La position du vaisseau sera donc celle de la souris
-        if self.immunite == False:
+        if not self.immunite:
             self.rect.x = position[0]
             self.rect.y = position[1]
 
@@ -63,12 +62,12 @@ class Vaisseau(pygame.sprite.Sprite):
 
         # On fait clignoter l'image du vaisseau en faisant varier la transparence de ce dernier
         opacité = self.image.get_alpha()
-        if self.apparition == True:
-            opacité+=4
+        if self.apparition:
+            opacité += 4
             if opacité > 255:
                 self.apparition = False
         else:
-            opacité-=4
+            opacité -= 4
             if opacité < 10:
                 self.apparition = True
         self.image.set_alpha(opacité)
