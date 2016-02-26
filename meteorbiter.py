@@ -121,14 +121,31 @@ while not arret:
             # On tire avec le clic de la souris
             elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite :
                 tirer(joueur.centrecanon[0],joueur.centrecanon[1],nombretir,perforant,False)
-                for a in range(1, 5):
+                mode=random.randrange(1,4)
+                if mode == 1 :
+                    for a in range(1, 5) :
+                        vador= monstre.Monstre()
+                        vador.modedeplacement = "D"
+                        liste_tout.add(vador)
+                        liste_monstre.add(vador)
+                        vador.rect.y = a*hauteur/5
+                        vador.rect.x = largeur+10
+                        tirer(vador.rect.x, vador.rect.y, 1, False, True)
+                if mode == 2 :
+                    for a in range(1, 10) :
+                        vador= monstre.Monstre()
+                        vador.modedeplacement = "D"
+                        liste_tout.add(vador)
+                        liste_monstre.add(vador)
+                        vador.rect.y = a*hauteur/10
+                        vador.rect.x = largeur+10
+                if mode == 3 :
                     vador= monstre.Monstre()
-                    vador.modedeplacement = "D"
+                    vador.modedeplacement = "S"
                     liste_tout.add(vador)
                     liste_monstre.add(vador)
-                    vador.rect.y = a*hauteur/5
-                    vador.rect.x = largeur+10
-                    tirer(vador.rect.x, vador.rect.y, 1, False, True)
+                    vador.naissance = hauteur/2
+
 
         # Collision entre le joueur et un tir ennemi
 
