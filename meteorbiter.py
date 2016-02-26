@@ -24,7 +24,6 @@ liste_fond = pygame.sprite.Group()
 liste_bonus = pygame.sprite.Group()
 liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
-liste_tir_mechant = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -71,11 +70,11 @@ def tirer(coor_x, coor_y, nbtir, perforant, ennemi):
     for a in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
-                liste_tir_mechant.add(balle)
+                #liste_tir_mechant.add(balle)
             else:
                 balle = tir.Tir()
                 balle.modetir = directions[a]
-                liste_tir.add(balle)
+            liste_tir.add(balle)
             if perforant:
                 balle.perforant = True
             # La balle est positionnée précisément sur le canon du vaisseau
@@ -149,24 +148,23 @@ while not arret:
 
         # Collision entre le joueur et un tir ennemi
 
-        for val in liste_tir_mechant :
+        for val in liste_tir:
+            if val.ennemi:
+                # Spritecollide nous permet de prendre un objet d'un groupe
+                # si il est en collision avec le ou les objets mentionnés
+                liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
+                for objet in liste_collision_tir_mechant:
+                    if not joueur.immunite :
+                        val.kill()
 
-            # Spritecollide nous permet de prendre un objet d'un groupe
-            # si il est en collision avec le ou les objets mentionnés
-            liste_collision_tir_mechant = pygame.sprite.spritecollide(val, liste_joueur, False)
-            for objet in liste_collision_tir_mechant:
-                if not joueur.immunite :
-                    val.kill()
-
-                    # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
-                    # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
-                    joueur.mort()
-                    explosion(joueur.centrecanon[0], joueur.centrecanon[1])
-                heuredeces = pygame.time.get_ticks()
+                        # Quand le joueur meurt on lance la méthode joueur.mort qui va lui enlever une vie
+                        # puis lancer l'animation d'explosion et retenir l'heure en millisecondes du décès
+                        joueur.mort()
+                        explosion(joueur.centrecanon[0], joueur.centrecanon[1])
+                    heuredeces = pygame.time.get_ticks()
 
         # Collision entre le joueur et un ennemi
         for col in liste_monstre :
-
             liste_collision_vaisseau = pygame.sprite.spritecollide(col, liste_joueur, False)
             for objet in liste_collision_vaisseau:
                 if not joueur.immunite :
@@ -221,19 +219,20 @@ while not arret:
         if temps - delaibonus > 15000:
             nombretir = 1
             perforant = False
-            # Détection des collisions entre le tir vaisseau vaisseau et le monstre
-        for touche in liste_tir :
+            # Détection des collisions entre le tir du vaisseau et le monstre
 
-            # Spritecollide nous permet de prendre un objet d'un groupe
-            # si il est en collision avec le ou les objets mentionnés
-            liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
-            for objet in liste_collision_monstre:
-                    explosion(objet.rect.x, objet.rect.y) #explosion
-                    objet.kill()
-                    if not perforant:
-                        touche.kill()
-                    score += 100
-                    print(score)
+        for touche in liste_tir :
+            if not touche.ennemi :
+                # Spritecollide nous permet de prendre un objet d'un groupe
+                # si il est en collision avec le ou les objets mentionnés
+                liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
+                for objet in liste_collision_monstre:
+                        explosion(objet.rect.x, objet.rect.y) #explosion
+                        objet.kill()
+                        if not perforant:
+                            touche.kill()
+                        score += 100
+                        print(score)
 
 
             # Si il y a eu collision : le chronometre est lancé et l'effet est actif
