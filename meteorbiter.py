@@ -13,7 +13,9 @@ pygame.init()
 # Taille de l'écran , on prend un ratio de 16/9
 largeur = 80*16
 hauteur = 80*9
+
 fenetre = pygame.display.set_mode([largeur, hauteur])
+pygame.display.set_caption("MeteOrbiter (nom temporaire)")
 
 # Groupements/listes d'objets
 liste_tir = pygame.sprite.Group()
