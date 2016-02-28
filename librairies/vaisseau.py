@@ -13,7 +13,7 @@ class Vaisseau(pygame.sprite.Sprite):
 
         # Chargement de l'image du vaisseau ; ne pas oublier convert qui va rendre le fichier manipulable
         # Ne pas oublier de rendre le fond blanc du vaisseau transparent
-        self.image = pygame.image.load("vaisseau.png").convert()
+        self.image = pygame.image.load("ressources/image/vaisseau.png").convert()
         self.image.set_colorkey([255, 255, 255])
 
         # Taille de l'image du vaisseau, pour faciliter les calculs

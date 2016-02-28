@@ -1,11 +1,7 @@
-import pygame
-import random
+import random, pygame
 
 """ On appelle nos classes définies dans des fichiers à part"""
-import vaisseau
-import tir
-import bonus
-import monstre
+from librairies import monstre, bonus, tir, vaisseau
 
 # Initialisation de pygame
 pygame.init()

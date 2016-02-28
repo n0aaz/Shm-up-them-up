@@ -1,6 +1,4 @@
-import pygame
-import math
-from pygame.locals import *
+import pygame, math
 
 
 class Monstre(pygame.sprite.Sprite):
@@ -11,7 +9,7 @@ class Monstre(pygame.sprite.Sprite):
         # Appel de la fonction de création de la classe
         super().__init__()
         # Chargement de l'image du monstre
-        self.image = pygame.image.load("monstre.png").convert()
+        self.image = pygame.image.load("ressources/image/monstre.png").convert()
         # Affichage arrière plan image transparent
         self.image.set_colorkey([255, 255, 255])
 

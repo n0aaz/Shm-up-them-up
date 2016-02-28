@@ -1,6 +1,5 @@
-import pygame
-import tir
-import math
+import math, pygame
+
 
 jaune = [222, 194, 39]
 noir = [0, 0, 0]
@@ -15,7 +14,7 @@ class Bonusplus(pygame.sprite.Sprite):
         self.ennemi = False
 
         # Génération du bonus
-        self.image = pygame.image.load("bonusplus.png").convert()
+        self.image = pygame.image.load("ressources/image/bonusplus.png").convert()
         self.image.set_colorkey([255, 255, 255])
         self.rect = self.image.get_rect()
 
@@ -38,7 +37,7 @@ class Bonusplus(pygame.sprite.Sprite):
 class Bonusrond(Bonusplus):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("bonusrond.png").convert()
+        self.image = pygame.image.load("ressources/image/bonusrond.png").convert()
         self.image.set_colorkey([255, 255, 255])
 
         self.rond = True
