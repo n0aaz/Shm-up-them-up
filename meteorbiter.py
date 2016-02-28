@@ -1,7 +1,7 @@
 import random, pygame
 
 """ On appelle nos classes définies dans des fichiers à part"""
-from librairies import monstre, bonus, tir, vaisseau
+from librairies import monstre, bonus, tir, vaisseau, Textes
 
 # Initialisation de pygame
 pygame.init()
@@ -27,8 +27,10 @@ liste_detruits = pygame.sprite.Group()
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
+etatactuel = "MMenu"
 arret = False
+
+
 
 # Initialisation du vaisseau du joueur
 if etatactuel == "Jeu":
@@ -256,6 +258,11 @@ while not arret:
             elif objet.rect.y < -20:
                 objet.kill()
 
+
+    if etatactuel == "MMenu":
+        etatsouris = False
+
+
     ###Commandes communes
 
         # On appelle la fonction update de tous les objets en meme temps
@@ -275,5 +282,8 @@ while not arret:
         # Pourquoi vouloir aller plus vite?
         # Limite de rafraichissement à 60 fois par seconde
         clock.tick(60)
+
+
+
 
 pygame.quit()
