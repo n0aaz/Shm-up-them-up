@@ -25,22 +25,23 @@ liste_detruits = pygame.sprite.Group()
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 
 etatactuel = "Jeu"
 arret = False
 
 # Initialisation du vaisseau du joueur
-joueur = vaisseau.Vaisseau()
-liste_tout.add(joueur)
-liste_joueur.add(joueur)
-joueur.rect.x = largeur/20
-joueur.rect.y = hauteur/2
-heuredeces = 0
-delaibonus = 0
-nombretir = 1
-perforant = False
-score = 0
+if etatactuel == "Jeu":
+    joueur = vaisseau.Vaisseau()
+    liste_tout.add(joueur)
+    liste_joueur.add(joueur)
+    joueur.rect.x = largeur/20
+    joueur.rect.y = hauteur/2
+    heuredeces = 0
+    delaibonus = 0
+    nombretir = 1
+    perforant = False
+    score = 0
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
@@ -218,7 +219,10 @@ while not arret:
         # Le vaisseau est totalement invisible pendant 2s (il a explosé)
         # Pendant 5s il réapparait en clignotant, pour indiquer au joueur qu'il doit se préparer
 
-        if temps - heuredeces > 2500 and temps - heuredeces < 7500 and joueur.immunite:
+        if temps - heuredeces >= 2500 and temps - heuredeces < 7500 and joueur.immunite:
+            if temps - heuredeces < 2600:
+                bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
+                bruit_reapparition.play()
             joueur.cligno()
             joueur.rect.x = largeur/20
             joueur.rect.y = pygame.mouse.get_pos()[1]
