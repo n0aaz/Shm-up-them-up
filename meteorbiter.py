@@ -290,8 +290,12 @@ while not arret:
 
     elif etatactuel == "GameOver":
         centre = [largeur/2, hauteur/2]
+        position_score = [largeur/2-160, hauteur/2+180]
+        position_score2 = [largeur/2+60, hauteur/2+180]
         couleur = [255, 255, 255]
         Textes.message_display("Game Over", centre, 115, couleur, fenetre)
+        Textes.message_display("Score : ", position_score, 65, couleur, fenetre)
+        Textes.message_display(str(score), position_score2, 65, couleur, fenetre)
         son_gameover.play()
         pygame.display.flip()
         clock.tick(60)
