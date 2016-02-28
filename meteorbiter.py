@@ -65,7 +65,7 @@ def explosion(coor_x, coor_y):
 
 def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
     directions = ["E", "NE", "SE"]
-
+    son_tir = pygame.mixer.Sound("ressources/son/tir.ogg")
     for numerodirection in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
@@ -82,6 +82,7 @@ def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
             # permettre le déplacement de tous les objets en meme temps et de vérifier
             # si il y a collision
             liste_tout.add(balle)
+    son_tir.play()
 
 # Génération aléatoire d'étoiles avant le démarrage du jeu
 for et in range(250):
