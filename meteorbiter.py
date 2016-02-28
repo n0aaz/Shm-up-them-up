@@ -23,11 +23,13 @@ liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
 liste_detruits = pygame.sprite.Group()
 
+son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
+
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "MMenu"
+etatactuel = "Jeu"
 arret = False
 
 
@@ -222,9 +224,17 @@ while not arret:
         # Pendant 5s il réapparait en clignotant, pour indiquer au joueur qu'il doit se préparer
 
         if temps - heuredeces >= 2500 and temps - heuredeces < 7500 and joueur.immunite:
-            if temps - heuredeces < 2600:
+            if temps - heuredeces < 2600 and joueur.vie > 0:
                 bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
                 bruit_reapparition.play()
+
+            #pas de résurrection si le joueur n'a plus de vies
+            if joueur.vie == 0:
+                print("Game Over")
+                for tout in liste_tout:
+                    tout.kill()
+                etatactuel = "GameOver"
+
             joueur.cligno()
             joueur.rect.x = largeur/20
             joueur.rect.y = pygame.mouse.get_pos()[1]
@@ -234,9 +244,6 @@ while not arret:
             joueur.image.set_alpha(255)
 
     ###Mort définitive du joueur
-        if joueur.vie == 0:
-            print("Game Over")
-            arret = True
 
 
     ###Destruction/recyclage des objets inutiles
@@ -258,11 +265,6 @@ while not arret:
             elif objet.rect.y < -20:
                 objet.kill()
 
-
-    if etatactuel == "MMenu":
-        etatsouris = False
-
-
     ###Commandes communes
 
         # On appelle la fonction update de tous les objets en meme temps
@@ -283,6 +285,16 @@ while not arret:
         # Limite de rafraichissement à 60 fois par seconde
         clock.tick(60)
 
+    if etatactuel == "MMenu":
+        etatsouris = False
+
+    elif etatactuel == "GameOver":
+        centre = [largeur/2, hauteur/2]
+        couleur = [255, 255, 255]
+        Textes.message_display("Game Over", centre, 115, couleur, fenetre)
+        son_gameover.play()
+        pygame.display.flip()
+        clock.tick(60)
 
 
 
