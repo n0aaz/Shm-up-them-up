@@ -23,7 +23,7 @@ def message_display(text):
     gameDisplay.blit(forme_texte, position_texte)
 
 
-while 1 :
-    message_display("crash")
+while True :
+    message_display("Test")
     pygame.display.update()
 
