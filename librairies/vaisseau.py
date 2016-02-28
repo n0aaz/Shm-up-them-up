@@ -55,8 +55,8 @@ class Vaisseau(pygame.sprite.Sprite):
         self.image.set_alpha(0)
 
         # Et est joué le bruit d'explosion
-        #explosion = pygame.mixer.Sound("explosion.ogg")
-        #explosion.play()
+        explosion = pygame.mixer.Sound("ressources/son/explosion.ogg")
+        explosion.play()
 
     def cligno(self):
 
