@@ -289,6 +289,11 @@ while not arret:
         etatsouris = False
 
     elif etatactuel == "GameOver":
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                arret = True
+
         centre = [largeur/2, hauteur/2]
         position_score = [largeur/2-160, hauteur/2+180]
         position_score2 = [largeur/2+60, hauteur/2+180]
