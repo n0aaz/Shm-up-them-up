@@ -113,7 +113,7 @@ while not arret:
                 arret = True
 
             # On met le programme en pause si une touche quelconque est appuyée
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 while not nopause:
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN:
