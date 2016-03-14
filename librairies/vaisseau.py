@@ -16,8 +16,6 @@ class Vaisseau(pygame.sprite.Sprite):
         self.image = pygame.image.load("ressources/image/vaisseau.png").convert()
         self.image.set_colorkey([255, 255, 255])
 
-        self.vitesse = 5
-
         # Taille de l'image du vaisseau, pour faciliter les calculs
         self.taille = self.image.get_size()
 
@@ -46,19 +44,8 @@ class Vaisseau(pygame.sprite.Sprite):
 
         # La position du vaisseau sera donc celle de la souris
         if not self.immunite:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_z:
-                        self.rect.y -= self.vitesse
-                    elif event.key == pygame.K_s:
-                        self.rect.y += self.vitesse
-                    elif event.key == pygame.K_q:
-                        self.rect.x -= self.vitesse
-                    elif event.key == pygame.K_d:
-                        self.rect.x += self.vitesse
-
-            #self.rect.x = position[0]
-            #self.rect.y = position[1]
+            self.rect.x = position[0]
+            self.rect.y = position[1]
 
     def mort(self):
 
