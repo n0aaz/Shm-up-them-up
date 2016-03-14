@@ -148,7 +148,6 @@ while not arret:
             # On tire avec le clic de la souris
             elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
                 tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
-                vaguemonstre()
 
 
         liste_detruits.add(liste_tir, liste_monstre, liste_bonus)
@@ -195,7 +194,8 @@ while not arret:
 
         # Horloge rafraichie à chaque image
         temps = pygame.time.get_ticks()
-
+        if temps%5000==0:
+            vaguemonstre()
     ### Gestion de bonus aléatoire
 
         # Une chance sur 1000 à chaque image de faire naitre un bonus
