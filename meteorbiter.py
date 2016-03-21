@@ -1,4 +1,5 @@
-import random, pygame
+import pygame
+import random
 
 """ On appelle nos classes définies dans des fichiers à part"""
 from librairies import monstre, bonus, tir, vaisseau, Textes
@@ -22,14 +23,14 @@ liste_bonus = pygame.sprite.Group()
 liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
 liste_detruits = pygame.sprite.Group()
-
+liste_textes = pygame.sprite.Group()
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
+etatactuel = "GameOver"
 arret = False
 
 
@@ -194,7 +195,7 @@ while not arret:
 
         # Horloge rafraichie à chaque image
         temps = pygame.time.get_ticks()
-        if temps%5000==0:
+        if temps%5000<=10:
             vaguemonstre()
     ### Gestion de bonus aléatoire
 
@@ -302,9 +303,26 @@ while not arret:
         position_score = [largeur/2-160, hauteur/2+180]
         position_score2 = [largeur/2+60, hauteur/2+180]
         couleur = [255, 255, 255]
-        Textes.message_display("Game Over", centre, 115, couleur, fenetre)
-        Textes.message_display("Score : ", position_score, 65, couleur, fenetre)
-        Textes.message_display(str(score), position_score2, 65, couleur, fenetre)
+        for texte in liste_textes:
+            if texte.rect.collidepoint(pygame.mouse.get_pos()):
+                texte.surligne=True
+            else : texte.surligne= False
+
+        game_over=Textes.Textes('ressources/polices/Minecraft.ttf',250)
+        game_over.print_texte("Game Over",10,10)
+        liste_textes.add(game_over)
+
+        # On appelle la fonction update de tous les objets en meme temps
+        # pour les déplacer tous en même temps
+        liste_textes.update()
+
+        # Nettoyage de l'écran
+        fenetre.fill([0, 0, 0])
+
+        # Rendu de tous les objets
+        liste_textes.draw(fenetre)
+
+        liste_textes.add(game_over)
         son_gameover.play()
         pygame.display.flip()
         clock.tick(60)

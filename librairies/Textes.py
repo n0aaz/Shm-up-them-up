@@ -1,26 +1,27 @@
 import pygame
-class  textes(pygame.sprite.Sprite) :
-    def __init__(self):
+
+class Textes(pygame.sprite.Sprite):
+    def __init__(self, font_path, font_size):
+        pygame.sprite.Sprite.__init__(self)
+        self.police = pygame.font.Font(font_path, font_size)
+        self.couleur = (100,100,100)
         self.texte = "texte"
-        self.taille = 115
-        self.couleur = surlignage(True)
-        self.image = message_display(texte,taille,couleur)
+        self.rerender(5,5)
+        self.surligne = False
+    def update(self):
+        #position = pygame.mouse.get_pos()
+        #self.rect.x = position[0]
+        #self.rect.y = position[1]
 
-
-    def texte_police(texte, police,couleur):
-        forme_texte = police.render(texte, True, couleur) #Mise en forme du texte avec la couleur
-        return forme_texte,
-
-    def message_display(text,taille,couleur):
-        taille_texte = pygame.font.Font('ressources/polices/minecraft.ttf',taille) #Mise en forme de la police avec taille
-        forme_texte= texte_police(text, taille_texte,couleur) #appel a la fonction texte_police
-        return forme_texte
-
-
-    def surlignage(etat):
-        if etat == True :
-            pig= (255,255,255)
+        if self.surligne == True :
+            self.couleur= (255,255,255)
         else :
-            pig=(100, 100,100)
-
-        return pig
+            self.couleur=(100, 100,100)
+    def print_texte(self, texte_s, x, y):
+        self.texte = texte_s
+        self.rerender(x,y)
+    def rerender(self, x, y):
+        self.image = self.police.render(self.texte, 0, self.couleur)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
