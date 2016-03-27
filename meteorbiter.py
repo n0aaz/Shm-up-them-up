@@ -82,6 +82,10 @@ def vaguemonstre():
                     liste_monstre.add(vador)
                     vador.naissance = hauteur/2
 
+def vidageliste(liste):
+	for a in liste:
+		a.kill()
+
 def surlignage():
     for texte in liste_textes:
         # surligner le score lorsque le curseur passe dessus:
@@ -163,13 +167,13 @@ while not arret:
                     textequitter=Textes.Textes(police,50)
                     textequitter.print_texte("Quitter",centre[0],centre[1]+50)
                     liste_textes.add(textequitter)
-
                     liste_textes.draw(fenetre)
                     pygame.display.flip()
                     while not nopause:
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 nopause = True
+                                vidageliste(liste_textes)
                             #
                             elif textequitter.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
                                 nopause = True
