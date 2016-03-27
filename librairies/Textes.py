@@ -8,6 +8,7 @@ class Textes(pygame.sprite.Sprite):
         self.texte = "texte"
         self.rerender(5,5)
         self.surligne = False
+
     def update(self):
         #position = pygame.mouse.get_pos()
         #self.rect.x = position[0]
@@ -17,6 +18,9 @@ class Textes(pygame.sprite.Sprite):
             self.couleur= (255,255,255)
         else :
             self.couleur=(100, 100,100)
+
+        self.rerender(self.rect.x,self.rect.y)
+
     def print_texte(self, texte_s, x, y):
         self.texte = texte_s
         self.rerender(x,y)

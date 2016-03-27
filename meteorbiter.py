@@ -8,8 +8,13 @@ from librairies import monstre, bonus, tir, vaisseau, Textes
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 80*16
-hauteur = 80*9
+largeur = 60*16
+hauteur = 60*9
+
+# mise en place des positions des textes
+centre = [largeur / 2, hauteur / 2]
+position_score = [centre[0]-160, centre[1] + 180]
+position_score2 = [centre[0], centre[1] + 180]
 
 fenetre = pygame.display.set_mode([largeur, hauteur])
 pygame.display.set_caption("MeteOrbiter (nom temporaire)")
@@ -24,16 +29,20 @@ liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
 liste_detruits = pygame.sprite.Group()
 liste_textes = pygame.sprite.Group()
+
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
+police = 'ressources/polices/Minecraft.ttf'
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "GameOver"
+etatactuel = "Jeu"
 arret = False
-
-
+score = 0
+#compteur de frame(image)
+compteimage = 0
+initialisation = 0
 
 # Initialisation du vaisseau du joueur
 if etatactuel == "Jeu":
@@ -46,7 +55,6 @@ if etatactuel == "Jeu":
     delaibonus = 0
     nombretir = 1
     perforant = False
-    score = 0
 
 def vaguemonstre():
                 mode = random.randrange(1, 4)
@@ -73,6 +81,14 @@ def vaguemonstre():
                     liste_tout.add(vador)
                     liste_monstre.add(vador)
                     vador.naissance = hauteur/2
+
+def surlignage():
+    for texte in liste_textes:
+        # surligner le score lorsque le curseur passe dessus:
+        if texte.rect.collidepoint(pygame.mouse.get_pos()):
+            texte.surligne = True
+        else:
+            texte.surligne = False
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
@@ -139,12 +155,25 @@ while not arret:
             if event.type == pygame.QUIT:
                 arret = True
 
-            # On met le programme en pause si une touche quelconque est appuyée
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                while not nopause:
-                    for event in pygame.event.get():
-                        if event.type == pygame.KEYDOWN:
-                            nopause = True
+            # On met le programme en pause si la touche espace est appuyée
+            elif event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
+                    textepause=Textes.Textes(police,50)
+                    textepause.print_texte("PAUSE",centre[0],centre[1])
+                    liste_textes.add(textepause)
+                    textequitter=Textes.Textes(police,50)
+                    textequitter.print_texte("Quitter",centre[0],centre[1]+50)
+                    liste_textes.add(textequitter)
+
+                    liste_textes.draw(fenetre)
+                    pygame.display.flip()
+                    while not nopause:
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                nopause = True
+                            #
+                            elif textequitter.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                                nopause = True
+                                arret = True
 
             # On tire avec le clic de la souris
             elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
@@ -195,7 +224,7 @@ while not arret:
 
         # Horloge rafraichie à chaque image
         temps = pygame.time.get_ticks()
-        if temps%5000<=10:
+        if temps%5000<=50:
             vaguemonstre()
     ### Gestion de bonus aléatoire
 
@@ -233,9 +262,11 @@ while not arret:
                 bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
                 bruit_reapparition.play()
 
-            #pas de résurrection si le joueur n'a plus de vies
+            # pas de résurrection si le joueur n'a plus de vie
+            # Destruction de tous les objets et lancement menu gameover
             if joueur.vie == 0:
                 print("Game Over")
+                son_gameover.play(0,0,400)
                 for tout in liste_tout:
                     tout.kill()
                 etatactuel = "GameOver"
@@ -248,85 +279,71 @@ while not arret:
             joueur.immunite = False
             joueur.image.set_alpha(255)
 
-    ###Mort définitive du joueur
-
-
-    ###Destruction/recyclage des objets inutiles
-
-
-        # On fait disparaitre les objets lorsqu'ils ne sont plus visibles , gain de mémoire
-        for objet in liste_tout:
-            if objet.rect.x > largeur+20:
-                objet.kill()
-            elif objet.rect.y > hauteur+20:
-                objet.kill()
-            elif objet.rect.x < -20:
-                # Les étoiles ne disparaissent pas, elles reviennent de l'autre côté: recyclage
-                if objet.etoile:
-                    objet.rect.y = random.randrange(0, hauteur)
-                    objet.rect.x = largeur + 20
-                else:
-                    objet.kill()
-            elif objet.rect.y < -20:
-                objet.kill()
-
-    ###Commandes communes
-
-        # On appelle la fonction update de tous les objets en meme temps
-        # pour les déplacer tous en même temps
-        liste_tout.update()
-
-        # Nettoyage de l'écran
-        fenetre.fill([0, 0, 0])
-
-        # Rendu de tous les objets
-        liste_tout.draw(fenetre)
-
-        # Affichage de tout
-        pygame.display.flip()
-
-        # Quasiment tous les écrans sont limités à 60hz de rafraichissement
-        # Pourquoi vouloir aller plus vite?
-        # Limite de rafraichissement à 60 fois par seconde
-        clock.tick(60)
 
     if etatactuel == "MMenu":
         etatsouris = False
 
     elif etatactuel == "GameOver":
 
+        compteimage += 1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 arret = True
 
-        centre = [largeur/2, hauteur/2]
-        position_score = [largeur/2-160, hauteur/2+180]
-        position_score2 = [largeur/2+60, hauteur/2+180]
-        couleur = [255, 255, 255]
+        if initialisation <1:
+            initialisation +=1
+
+            #Initialisation du texte (police, taille) puis affichage dans les positions données
+            game_over = Textes.Textes(police, 50)
+            game_over.print_texte("Game Over",centre[0],centre[1])
+            liste_textes.add(game_over)
+
+            afficheurscore = Textes.Textes(police, 35)
+            afficheurscore.print_texte("Score",position_score[0],position_score[1])
+            liste_textes.add(afficheurscore)
+
+            afficheurscore2 = Textes.Textes(police, 35)
+            afficheurscore2.print_texte(str(score),position_score2[0],position_score2[1])
+            liste_textes.add(afficheurscore2)
+
+            liste_tout.add(liste_textes)
+
         for texte in liste_textes:
-            if texte.rect.collidepoint(pygame.mouse.get_pos()):
-                texte.surligne=True
-            else : texte.surligne= False
+            # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
+            if compteimage >= 60 * 10:
+                texte.rect.y -= 2
 
-        game_over=Textes.Textes('ressources/polices/Minecraft.ttf',250)
-        game_over.print_texte("Game Over",10,10)
-        liste_textes.add(game_over)
-
-        # On appelle la fonction update de tous les objets en meme temps
-        # pour les déplacer tous en même temps
-        liste_textes.update()
-
-        # Nettoyage de l'écran
-        fenetre.fill([0, 0, 0])
-
-        # Rendu de tous les objets
-        liste_textes.draw(fenetre)
-
-        liste_textes.add(game_over)
-        son_gameover.play()
-        pygame.display.flip()
-        clock.tick(60)
+    ###Destruction/recyclage des objets inutiles
 
 
+    # On fait disparaitre les objets lorsqu'ils ne sont plus visibles , gain de mémoire
+    for objet in liste_tout:
+        if objet.rect.x > largeur + 20:
+            objet.kill()
+        elif objet.rect.y > hauteur + 20:
+            objet.kill()
+        elif objet.rect.x < -20:
+            # Les étoiles ne disparaissent pas, elles reviennent de l'autre côté: recyclage
+            if objet.etoile:
+                objet.rect.y = random.randrange(0, hauteur)
+                objet.rect.x = largeur + 20
+            else:
+                objet.kill()
+        elif objet.rect.y < -20:
+            objet.kill()
+
+    # On appelle la fonction update de tous les objets en meme temps
+    # pour les déplacer tous en même temps
+    liste_tout.update()
+
+    # Nettoyage de l'écran
+    fenetre.fill([0, 0, 0])
+
+    # Rendu de tous les objets
+    liste_tout.draw(fenetre)
+
+    pygame.display.flip()
+    clock.tick(60)
 
 pygame.quit()

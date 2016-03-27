@@ -3,7 +3,8 @@ class  textes(pygame.sprite.Sprite) :
     def __init__(self):
         self.texte = "texte"
         self.taille = 115
-        self.couleur = surlignage(True)
+        self.surlignage = True
+        self.couleur = (255, 100, 100)
         self.image = message_display(self.texte,self.taille,self.couleur)
 
 
@@ -16,11 +17,12 @@ class  textes(pygame.sprite.Sprite) :
         forme_texte= texte_police(text, taille_texte,couleur) #appel a la fonction texte_police
         return forme_texte
 
+    def update(self):
+        if self.surlignage:
+            self.couleur = (255, 255, 255)
+        else:
+            self.couleur = (100, 100, 100)
 
-    def surlignage(etat):
-        if etat == True :
-            pig= (255,255,255)
-        else :
-            pig=(100, 100,100)
+        self.image = message_display(self.texte,self.taille,self.couleur)
 
-        return pig
+
