@@ -36,8 +36,8 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Score"
-quelvaisseau = 2
+etatactuel = "Jeu"
+quelvaisseau = 1
 arret = False
 score = 0
 #compteur de frame(image)
@@ -342,15 +342,17 @@ while not arret:
             init_titre("Game Over", centre[0]-180, centre[1])
             init_score(score,"score:",position_score[0],position_score[1])
 
-            for texte in liste_textes:
-            # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
-                if compteimage >= 60 * 10:
-                    texte.rect.y -= 2
+        for texte in liste_textes:
+        # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
+            if compteimage >= 60*10:
+                texte.rect.y -= 2
                     
         if len(liste_textes) == 0:
-            nomjoueur = Textes.Textes(police,50)
-            nomjoueur.print_texte("Quel est ton nom?", centre[0]-nomjoueur.centre, hauteur/6)
-            liste_textes.add(nomjoueur)
+            etatactuel = "Score"
+            initialisation = 0
+            #nomjoueur = Textes.Textes(police,50)
+            #nomjoueur.print_texte("Quel est ton nom?", centre[0]-nomjoueur.centre, hauteur/6)
+            #liste_textes.add(nomjoueur)
 
 
     for event in pygame.event.get():
