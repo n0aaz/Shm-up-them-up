@@ -20,8 +20,6 @@ class Tir(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
 
-        self.image.set_alpha(120)
-
         # Le mode de tir par défaut sera linéaire vers l'est
         self.modetir = "E"
         self.perforant = False
