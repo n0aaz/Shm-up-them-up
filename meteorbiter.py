@@ -37,7 +37,7 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
+etatactuel = "GameOver"
 arret = False
 score = 0
 #compteur de frame(image)
@@ -55,6 +55,24 @@ if etatactuel == "Jeu":
     delaibonus = 0
     nombretir = 1
     perforant = False
+
+###Menus###
+def init_gameover():
+    #Initialisation du texte (police, taille) puis affichage dans les positions données
+    game_over = Textes.Textes(police, 50)
+    game_over.print_texte("Game Over",centre[0],centre[1])
+    liste_textes.add(game_over)
+
+def init_score(entree):
+    afficheurscore = Textes.Textes(police, 35)
+    afficheurscore.print_texte("Score",position_score[0],position_score[1])
+    liste_textes.add(afficheurscore)
+    
+    afficheurscore2 = Textes.Textes(police, 35)
+    afficheurscore2.print_texte(str(entree),position_score2[0],position_score2[1])
+    liste_textes.add(afficheurscore2)
+
+###Menus###
 
 def vaguemonstre():
                 mode = random.randrange(1, 4)
@@ -149,7 +167,7 @@ for et in range(250):
 while not arret:
     # On stoppe le programme si l'utilisateur quitte
     nopause = False
-
+    surlignage()		
     #if etatactuel == "Menu":
     #Travaux en cours#
 
@@ -161,12 +179,14 @@ while not arret:
 
             # On met le programme en pause si la touche espace est appuyée
             elif event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
+                    
                     textepause=Textes.Textes(police,50)
                     textepause.print_texte("PAUSE",centre[0],centre[1])
                     liste_textes.add(textepause)
                     textequitter=Textes.Textes(police,50)
                     textequitter.print_texte("Quitter",centre[0],centre[1]+50)
                     liste_textes.add(textequitter)
+                    
                     liste_textes.draw(fenetre)
                     pygame.display.flip()
                     while not nopause:
@@ -254,6 +274,10 @@ while not arret:
         if temps - delaibonus > 15000:
             nombretir = 1
             perforant = False
+        
+        # Offrir une vie au joueur tous les 10000 points (c'est déjà assez dur comme ça)
+        if score % 10000 == 0 and score > 0:
+            joueur.vie += 1
 
     ###Resurrection du joueur
 
@@ -271,8 +295,7 @@ while not arret:
             if joueur.vie == 0:
                 print("Game Over")
                 son_gameover.play(0,0,400)
-                for tout in liste_tout:
-                    tout.kill()
+                vidageliste(liste_tout)
                 etatactuel = "GameOver"
 
             joueur.cligno()
@@ -294,29 +317,22 @@ while not arret:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 arret = True
-
+		#on n'initialise les textes qu'une seule fois pour éviter
+		#de générer des milliers d'objets
         if initialisation <1:
             initialisation +=1
+            init_gameover()
+            init_score(score)
 
-            #Initialisation du texte (police, taille) puis affichage dans les positions données
-            game_over = Textes.Textes(police, 50)
-            game_over.print_texte("Game Over",centre[0],centre[1])
-            liste_textes.add(game_over)
-
-            afficheurscore = Textes.Textes(police, 35)
-            afficheurscore.print_texte("Score",position_score[0],position_score[1])
-            liste_textes.add(afficheurscore)
-
-            afficheurscore2 = Textes.Textes(police, 35)
-            afficheurscore2.print_texte(str(score),position_score2[0],position_score2[1])
-            liste_textes.add(afficheurscore2)
-
-            liste_tout.add(liste_textes)
-
-        for texte in liste_textes:
+            for texte in liste_textes:
             # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
-            if compteimage >= 60 * 10:
-                texte.rect.y -= 2
+                if compteimage >= 60 * 10:
+                    texte.rect.y -= 2
+                    
+        if len(liste_textes) == 0:
+            nomjoueur = Textes.Textes(police,50)
+            nomjoueur.print_texte("Quel est ton nom?", centre[0]-nomjoueur.centre, hauteur/6)
+            liste_textes.add(nomjoueur)
 
     ###Destruction/recyclage des objets inutiles
 
@@ -337,6 +353,7 @@ while not arret:
         elif objet.rect.y < -20:
             objet.kill()
 
+    liste_tout.add(liste_textes)
     # On appelle la fonction update de tous les objets en meme temps
     # pour les déplacer tous en même temps
     liste_tout.update()

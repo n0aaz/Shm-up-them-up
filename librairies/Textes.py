@@ -8,6 +8,7 @@ class Textes(pygame.sprite.Sprite):
         self.texte = "texte"
         self.rerender(5,5)
         self.surligne = False
+        self.centre = 2
 
     def update(self):
         #position = pygame.mouse.get_pos()
@@ -29,3 +30,5 @@ class Textes(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.taille = self.image.get_size()
+        self.centre = self.taille[0]/2
