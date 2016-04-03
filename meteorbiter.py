@@ -189,9 +189,7 @@ while not arret:
             # On met le programme en pause si la touche espace est appuyée
             if event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
                     
-                    textepause=Textes.Textes(police,50)
-                    textepause.print_texte("PAUSE",centre[0],centre[1])
-                    liste_textes.add(textepause)
+                    init_titre("Pause", largeur/2 - 200, 25)
                     textequitter=Textes.Textes(police,50)
                     textequitter.print_texte("Quitter",centre[0],centre[1]+50)
                     liste_textes.add(textequitter)
