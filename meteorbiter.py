@@ -30,6 +30,7 @@ liste_detruits = pygame.sprite.Group()
 liste_textes = pygame.sprite.Group()
 
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
+musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
 police = 'ressources/polices/Minecraft.ttf'
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
@@ -56,7 +57,8 @@ if etatactuel == "Jeu":
         
     elif quelvaisseau == 3:
         joueur = vaisseau.Vaisseau3()
-		
+	
+    musique.play(0,0,400)
     liste_tout.add(joueur)
     liste_joueur.add(joueur)
     joueur.rect.x = largeur/20
