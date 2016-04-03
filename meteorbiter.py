@@ -8,13 +8,12 @@ from librairies import monstre, bonus, tir, vaisseau, Textes
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 60*16
-hauteur = 60*9
+largeur = 62*16
+hauteur = 62*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
 position_score = [centre[0]-160, centre[1] + 180]
-position_score2 = [centre[0], centre[1] + 180]
 
 fenetre = pygame.display.set_mode([largeur, hauteur])
 pygame.display.set_caption("MeteOrbiter (nom temporaire)")
@@ -37,8 +36,8 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
-quelvaisseau = 3
+etatactuel = "Score"
+quelvaisseau = 2
 arret = False
 score = 0
 #compteur de frame(image)
@@ -68,21 +67,22 @@ if etatactuel == "Jeu":
     perforant = False
 
 ###Menus###
-def init_gameover():
+def init_titre(entree,x,y):
     #Initialisation du texte (police, taille) puis affichage dans les positions données
-    game_over = Textes.Textes(police, 50)
-    game_over.print_texte("Game Over",centre[0],centre[1])
-    liste_textes.add(game_over)
+    titre = Textes.Textes(police, 50)
+    titre.print_texte(entree,x,y)
+    liste_textes.add(titre)
 
-def init_score(entree):
+def init_score(entree,entree2,x,y):
     afficheurscore = Textes.Textes(police, 35)
-    afficheurscore.print_texte("Score",position_score[0],position_score[1])
+    afficheurscore.print_texte(entree2,x,y)
     liste_textes.add(afficheurscore)
     
     afficheurscore2 = Textes.Textes(police, 35)
-    afficheurscore2.print_texte(str(entree),position_score2[0],position_score2[1])
+    afficheurscore2.print_texte(str(entree),x+200,y)
     liste_textes.add(afficheurscore2)
 
+    
 ###Menus###
 
 def vaguemonstre():
@@ -185,11 +185,9 @@ while not arret:
     if etatactuel == "Jeu":
     ######################Evenements
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                arret = True
 
             # On met le programme en pause si la touche espace est appuyée
-            elif event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
+            if event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
                     
                     textepause=Textes.Textes(police,50)
                     textepause.print_texte("PAUSE",centre[0],centre[1])
@@ -289,6 +287,7 @@ while not arret:
         # Offrir une vie au joueur tous les 10000 points (c'est déjà assez dur comme ça)
         if score % 10000 == 0 and score > 0:
             joueur.vie += 1
+            
 
     ###Resurrection du joueur
 
@@ -318,22 +317,32 @@ while not arret:
             joueur.image.set_alpha(255)
 
 
-    if etatactuel == "MMenu":
-        etatsouris = False
+    elif etatactuel == "Score":
+        if initialisation <1 :
+            initialisation += 1
+            init_titre("Meilleurs scores", largeur/2 - 200, 25)
+            boutonmenu = Textes.Textes(police, 50)
+            boutonmenu.print_texte(" <= Menu ",0,hauteur-50)
+            liste_textes.add(boutonmenu)
+            for a in range (1,6):
+                b= str(a)+"-"
+                init_score(score,b,350,a*(hauteur/6))
+        
+        for event in pygame.event.get():
+            if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                arret = True
+        
 
     elif etatactuel == "GameOver":
 
         compteimage += 1
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                arret = True
 		#on n'initialise les textes qu'une seule fois pour éviter
 		#de générer des milliers d'objets
         if initialisation <1:
             initialisation +=1
-            init_gameover()
-            init_score(score)
+            init_titre("Game Over", centre[0]-180, centre[1])
+            init_score(score,"score:",position_score[0],position_score[1])
 
             for texte in liste_textes:
             # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
@@ -345,6 +354,11 @@ while not arret:
             nomjoueur.print_texte("Quel est ton nom?", centre[0]-nomjoueur.centre, hauteur/6)
             liste_textes.add(nomjoueur)
 
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            arret = True
+            
     ###Destruction/recyclage des objets inutiles
 
 
