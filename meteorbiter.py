@@ -37,7 +37,8 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "GameOver"
+etatactuel = "Jeu"
+quelvaisseau = 3
 arret = False
 score = 0
 #compteur de frame(image)
@@ -46,7 +47,17 @@ initialisation = 0
 
 # Initialisation du vaisseau du joueur
 if etatactuel == "Jeu":
-    joueur = vaisseau.Vaisseau()
+	
+    #chargement du vaisseau selon la sélection du joueur
+    if quelvaisseau == 1 :
+        joueur = vaisseau.Vaisseau()
+
+    elif quelvaisseau == 2:
+        joueur = vaisseau.Vaisseau2()
+        
+    elif quelvaisseau == 3:
+        joueur = vaisseau.Vaisseau3()
+		
     liste_tout.add(joueur)
     liste_joueur.add(joueur)
     joueur.rect.x = largeur/20

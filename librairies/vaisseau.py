@@ -32,6 +32,7 @@ class Vaisseau(pygame.sprite.Sprite):
         self.immunite = False
 
         self.apparition = True
+        
     """ Methode (fonction) de la classe pour le mouvement du vaisseau qui suivra celui de la souris"""
 
     def update(self):
@@ -71,3 +72,71 @@ class Vaisseau(pygame.sprite.Sprite):
             if opacité < 10:
                 self.apparition = True
         self.image.set_alpha(opacité)
+        
+class Vaisseau2(Vaisseau):
+	def __init__(self):
+		
+		#le vaisseau 2 est comme le vaisseau 1 mais avec une image différente
+		super().__init__()
+
+		self.image = pygame.image.load("ressources/image/vaisseau2f1.png").convert()
+		self.image.set_colorkey([255, 255, 255])
+		
+		#Taille de l'image du vaisseau, pour faciliter les calculs
+		self.taille = self.image.get_size()
+
+        # Appel des coordonnées (taille) de l'image pour en faire les coordonnées du vaisseau
+		self.rect = self.image.get_rect()
+
+        # On définit des coordonnées du centre du canon pour faciliter le placement ultérieur
+		self.centrecanon = [self.rect.x + self.taille[0] / 2 + 30, self.rect.y + self.taille[1] / 2 - 1]
+        
+		#compteur c qui va nous permettre d'incrémenter l'index de liens
+		self.c = 0
+        #compteur d pour compter les images seules
+		self.d = 0 
+        #liens des différentes images de l'animation du vaisseau
+		self.lienframe = ["ressources/image/vaisseau2f1.png","ressources/image/vaisseau2f2.png","ressources/image/vaisseau2f3.png"]
+		
+	def update(self):
+		#on réutilise le update défini pour notre premier vaisseau
+		super().update()
+
+		#conditions if > plutot que modulo pour éviter que les variables
+		#prennent des valeurs trop grandes et surchargent la mémoire
+
+		#d est utilisé pour n'incrémenter c que toutes les 6 frames
+		if self.d >6 : 
+			self.c += 1
+			self.d = 0
+			
+		if self.c > 2 :
+			self.c = 0
+			
+		if not self.immunite:
+		    self.image = pygame.image.load(self.lienframe[self.c]).convert()
+		    self.image.set_colorkey([255, 255, 255])
+		self.d += 1
+		
+class Vaisseau3(Vaisseau2):
+	def __init__(self):
+		
+		#le vaisseau 2 est comme le vaisseau 1 mais avec une image différente
+		super().__init__()
+
+		self.image = pygame.image.load("ressources/image/vaisseau3f1.png").convert()
+		self.image.set_colorkey([255, 255, 255])
+		
+		#Taille de l'image du vaisseau, pour faciliter les calculs
+		self.taille = self.image.get_size()
+
+        # Appel des coordonnées (taille) de l'image pour en faire les coordonnées du vaisseau
+		self.rect = self.image.get_rect()
+
+        # On définit des coordonnées du centre du canon pour faciliter le placement ultérieur
+		self.centrecanon = [self.rect.x + self.taille[0] / 2 + 30, self.rect.y + self.taille[1] / 2 - 1]
+
+		self.lienframe = ["ressources/image/vaisseau3f1.png","ressources/image/vaisseau3f2.png","ressources/image/vaisseau3f3.png"]
+
+	
+
