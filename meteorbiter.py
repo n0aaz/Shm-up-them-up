@@ -125,15 +125,6 @@ def surlignage():
         else:
             texte.surligne = False
 
-def enreg_score(nom,score):
-    #on initialise le fichier texte
-    #attribut a = append, ajout au fichier
-
-    ligne = nom + " " + str(score)
-    fichier = open("score.txt", "a")
-    fichier.write(ligne + "\n")
-    scoreFile.close()
-
 # Fonction/animation explosion lors de la mort du vaisseau
 
 
