@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
 etatactuel = "Jeu"
-quelvaisseau = 3
+quelvaisseau = 1
 arret = False
 score = 0
 #compteur de frame(image)
