@@ -4,12 +4,16 @@ import random
 """ On appelle nos classes définies dans des fichiers à part"""
 from librairies import monstre, bonus, tir, vaisseau, Textes
 
+# On demande le nom du joueur avant l'initialisation de pygame
+# Pour que l'attention du joueur soit focalisée sur le terminal
+nom_joueur = input('Quel est ton nom?')
+
 # Initialisation de pygame
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 100*16
-hauteur = 100*9
+largeur = 60*16
+hauteur = 60*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
@@ -37,8 +41,8 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
-quelvaisseau = 2
+etatactuel = "Score"
+quelvaisseau = 3
 arret = False
 score = 0
 #compteur de frame(image)
@@ -130,9 +134,22 @@ def enreg_score(nom,score):
     #attribut a = append, ajout au fichier
 
     ligne = nom + " " + str(score)
-    fichier = open("score.txt", "a")
-    fichier.write(ligne + "\n")
-    scoreFile.close()
+    with open("ressources/texte/score.txt", "a") as fichier:
+        fichier.write(ligne + "\n")
+
+def lire_score():
+	# On lit le fichier texte, attribut "r" pour "read"
+	with open("ressources/texte/score.txt", "r") as fichier:
+		
+		lignes = fichier.readlines()
+		scores = []
+		noms = []
+		nombres = []
+		for ligne in lignes:
+			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
+			scores.append(ligne.split())
+		return scores
+
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
@@ -176,6 +193,8 @@ def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
             # si il y a collision
             liste_tout.add(balle)
 
+# Initialisation des meilleurs scores
+meilleurs_scores = lire_score()
 # Génération aléatoire d'étoiles avant le démarrage du jeu
 for et in range(250):
     etoile = tir.Etoiles()
@@ -334,13 +353,18 @@ while not arret:
             boutonmenu = Textes.Textes(police, 50)
             boutonmenu.print_texte(" <= Menu ",0,hauteur-50)
             liste_textes.add(boutonmenu)
-            for a in range (1,6):
-                b= str(a)+"-"
-                init_score(score,b,350,a*(hauteur/6))
+            for a in range (1,len(meilleurs_scores)+1):
+                b= str(a)+" - "+meilleurs_scores[a-1][0]+":"
+                init_score(meilleurs_scores[a-1][1],b,350,a*(hauteur/6))
         
         for event in pygame.event.get():
             if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
                 arret = True
+                #on enregistre le score dans le fichier uniquement si celui ci
+                #est meilleur que le dernier meilleur score et que le fichier
+                #ne contient pas plus de 5 scores
+                if score > meilleurs_scores[-1][1] and len(meilleurs_scores) <= 5:
+                    enreg_score(nom_joueur,score)
         
 
     elif etatactuel == "GameOver":
@@ -362,9 +386,6 @@ while not arret:
         if len(liste_textes) == 0:
             etatactuel = "Score"
             initialisation = 0
-            #nomjoueur = Textes.Textes(police,50)
-            #nomjoueur.print_texte("Quel est ton nom?", centre[0]-nomjoueur.centre, hauteur/6)
-            #liste_textes.add(nomjoueur)
 
 
     for event in pygame.event.get():
