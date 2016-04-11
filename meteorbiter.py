@@ -41,7 +41,7 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Score"
+etatactuel = "Jeu"
 quelvaisseau = 3
 arret = False
 score = 0
@@ -87,7 +87,6 @@ def init_score(entree,entree2,x,y):
     afficheurscore2 = Textes.Textes(police, 35)
     afficheurscore2.print_texte(str(entree),x+200,y)
     liste_textes.add(afficheurscore2)
-
     
 ###Menus###
 
@@ -143,8 +142,6 @@ def lire_score():
 		
 		lignes = fichier.readlines()
 		scores = []
-		noms = []
-		nombres = []
 		for ligne in lignes:
 			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
 			scores.append(ligne.split())
@@ -349,10 +346,14 @@ while not arret:
     elif etatactuel == "Score":
         if initialisation <1 :
             initialisation += 1
+            # Reinitialisation des meilleurs scores, au cas ou un record ait été battu
+            meilleurs_scores = lire_score()
+            
             init_titre("Meilleurs scores", largeur/2 - 200, 25)
             boutonmenu = Textes.Textes(police, 50)
             boutonmenu.print_texte(" <= Menu ",0,hauteur-50)
             liste_textes.add(boutonmenu)
+            
             for a in range (1,len(meilleurs_scores)+1):
                 b= str(a)+" - "+meilleurs_scores[a-1][0]+":"
                 init_score(meilleurs_scores[a-1][1],b,350,a*(hauteur/6))
@@ -360,11 +361,6 @@ while not arret:
         for event in pygame.event.get():
             if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
                 arret = True
-                #on enregistre le score dans le fichier uniquement si celui ci
-                #est meilleur que le dernier meilleur score et que le fichier
-                #ne contient pas plus de 5 scores
-                if score > meilleurs_scores[-1][1] and len(meilleurs_scores) <= 5:
-                    enreg_score(nom_joueur,score)
         
 
     elif etatactuel == "GameOver":
@@ -374,6 +370,11 @@ while not arret:
 		#on n'initialise les textes qu'une seule fois pour éviter
 		#de générer des milliers d'objets
         if initialisation <1:
+		    #on enregistre le score dans le fichier uniquement si celui ci
+            #est meilleur que le dernier meilleur score et que le fichier
+            #ne contient pas plus de 5 scores
+            if score > int(meilleurs_scores[-1][1]) and len(meilleurs_scores) <= 5:
+                enreg_score(nom_joueur,score)
             initialisation +=1
             init_titre("Game Over", centre[0]-180, centre[1])
             init_score(score,"score:",position_score[0],position_score[1])
