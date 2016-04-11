@@ -8,8 +8,8 @@ from librairies import monstre, bonus, tir, vaisseau, Textes
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 62*16
-hauteur = 62*9
+largeur = 100*16
+hauteur = 100*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
@@ -38,7 +38,7 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
 etatactuel = "Jeu"
-quelvaisseau = 1
+quelvaisseau = 2
 arret = False
 score = 0
 #compteur de frame(image)
@@ -304,6 +304,7 @@ while not arret:
             # Destruction de tous les objets et lancement menu gameover
             if joueur.vie == 0:
                 print("Game Over")
+                musique.stop()
                 son_gameover.play(0,0,400)
                 vidageliste(liste_tout)
                 etatactuel = "GameOver"
