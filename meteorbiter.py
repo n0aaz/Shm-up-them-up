@@ -3,6 +3,7 @@ import random
 
 """ On appelle nos classes définies dans des fichiers à part"""
 from librairies import monstre, bonus, tir, vaisseau, Textes
+import Alicia
 
 # On demande le nom du joueur avant l'initialisation de pygame
 # Pour que l'attention du joueur soit focalisée sur le terminal
@@ -147,6 +148,19 @@ def lire_score():
 			scores.append(ligne.split())
 		return scores
 
+# En attente de la fonction de tri décroissant
+"""def tri_score(liste):
+	
+	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
+	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
+	
+	liste_tri = Alicia.tridecroissant(liste)
+    ligne = liste_tri[0] + " " + liste_tri[1]
+    with open("ressources/texte/score.txt", "w") as fichier:
+        for score in liste_tri:
+			ligne = score[0] + " " + score[1]
+			fichier.write(ligne + "\n")
+"""
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
