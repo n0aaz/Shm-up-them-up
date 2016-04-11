@@ -42,7 +42,7 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Jeu"
+etatactuel = "Score"
 quelvaisseau = 3
 arret = False
 score = 0
@@ -146,6 +146,8 @@ def lire_score():
 		for ligne in lignes:
 			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
 			scores.append(ligne.split())
+		for score in scores:
+			score[1] = int(score[1])
 		return scores
 
 # En attente de la fonction de tri décroissant
@@ -153,13 +155,11 @@ def lire_score():
 	
 	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
 	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
-	
-	liste_tri = Alicia.tridecroissant(liste)
-    ligne = liste_tri[0] + " " + liste_tri[1]
+    liste_tri = Alicia.tridecroissant(liste)
     with open("ressources/texte/score.txt", "w") as fichier:
         for score in liste_tri:
-			ligne = score[0] + " " + score[1]
-			fichier.write(ligne + "\n")
+            ligne = score[0] + " " + str(score[1])
+            fichier.write(ligne + "\n")
 """
 
 # Fonction/animation explosion lors de la mort du vaisseau
@@ -360,6 +360,7 @@ while not arret:
     elif etatactuel == "Score":
         if initialisation <1 :
             initialisation += 1
+            tri_score(meilleurs_scores)            
             # Reinitialisation des meilleurs scores, au cas ou un record ait été battu
             meilleurs_scores = lire_score()
             
@@ -387,7 +388,7 @@ while not arret:
 		    #on enregistre le score dans le fichier uniquement si celui ci
             #est meilleur que le dernier meilleur score et que le fichier
             #ne contient pas plus de 5 scores
-            if score > int(meilleurs_scores[-1][1]) and len(meilleurs_scores) <= 5:
+            if score > int(meilleurs_scores[-1][1]):
                 enreg_score(nom_joueur,score)
             initialisation +=1
             init_titre("Game Over", centre[0]-180, centre[1])

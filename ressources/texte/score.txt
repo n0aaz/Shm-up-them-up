@@ -1,4 +1,4 @@
-azato 0
-azato 0
-zoo 0
-azo 800
+zab 200
+zob 300
+aboz 1200
+zib 3400
