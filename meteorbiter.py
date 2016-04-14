@@ -20,6 +20,7 @@ hauteur = 60*9
 centre = [largeur / 2, hauteur / 2]
 position_score = [centre[0]-160, centre[1] + 180]
 
+# Mise en place de la fenetre Pygame
 fenetre = pygame.display.set_mode([largeur, hauteur])
 pygame.display.set_caption("MeteOrbiter (nom temporaire)")
 
@@ -42,18 +43,20 @@ police = 'ressources/polices/Minecraft.ttf'
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(True)
 
-etatactuel = "Score"
-quelvaisseau = 3
+# Paramètres d'initialisation du jeu, etatactuel permet de choisir sur
+# quel menu démarrer, quelvaisseau permet de choisir le vaisseau 1,2 ou 3
+etatactuel = "Jeu"
+quelvaisseau = 1
 arret = False
 score = 0
 #compteur de frame(image)
 compteimage = 0
 initialisation = 0
 
-# Initialisation du vaisseau du joueur
+# Initialisation du jeu uniquement si on est dans l'étatactuel jeu
 if etatactuel == "Jeu":
 	
-    #chargement du vaisseau selon la sélection du joueur
+    #chargement du vaisseau différent selon la sélection du joueur
     if quelvaisseau == 1 :
         joueur = vaisseau.Vaisseau()
 
@@ -63,17 +66,21 @@ if etatactuel == "Jeu":
     elif quelvaisseau == 3:
         joueur = vaisseau.Vaisseau3()
 	
+	#Lancement de la musique
     musique.play(0,0,400)
+    #Ajout du vaisseau du joueur et initialisation à un point de départ
     liste_tout.add(joueur)
     liste_joueur.add(joueur)
     joueur.rect.x = largeur/20
     joueur.rect.y = hauteur/2
+    #heuredeces et delaibonus doivent etre initialisés pour permettre
+    #la résurrection du joueur et la gestion des durées de bonus
     heuredeces = 0
     delaibonus = 0
     nombretir = 1
     perforant = False
 
-###Menus###
+###Menus### - En tant que fonction pour faciliter une utilisation ultérieure
 def init_titre(entree,x,y):
     #Initialisation du texte (police, taille) puis affichage dans les positions données
     titre = Textes.Textes(police, 50)
@@ -117,6 +124,7 @@ def vaguemonstre():
                     liste_monstre.add(vador)
                     vador.naissance = hauteur/2
 
+#Petite fonction utilitaire pour vider une liste d'objet
 def vidageliste(liste):
 	for a in liste:
 		a.kill()
@@ -151,22 +159,25 @@ def lire_score():
 		return scores
 
 # En attente de la fonction de tri décroissant
-"""def tri_score(liste):
+def tri_score(liste):
 	
 	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
 	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
-    liste_tri = Alicia.tridecroissant(liste)
+    liste_tri = Alicia.tricroissant(liste)
     with open("ressources/texte/score.txt", "w") as fichier:
         for score in liste_tri:
             ligne = score[0] + " " + str(score[1])
             fichier.write(ligne + "\n")
-"""
+
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
 
 def explosion(coor_x, coor_y):
-    # différentes directions pour les tirs
+    # différentes directions , une explosion c'est une multitude de tirs
+    # inoffensifs
+    # On initialise les directions dans une liste pour pouvoir les utiliser
+    # tous en meme temps
     directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
     for petitcompteur in range(len(directions)):
         b = tir.Explosion()
@@ -184,9 +195,12 @@ def explosion(coor_x, coor_y):
 
 
 def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
+    #différentes directions d'un tir (joueur ou ennemi, fonction commune)
     directions = ["E", "NE", "SE"]
+    #bruitage
     son_tir = pygame.mixer.Sound("ressources/son/tir.ogg")
     son_tir.play()
+    
     for numerodirection in range(nbtir):
             if ennemi:
                 balle = tir.Tirennemi()
@@ -223,6 +237,9 @@ while not arret:
     #if etatactuel == "Menu":
     #Travaux en cours#
 
+    # boucles de programme différentes selon l'etat actuel demandé par une 
+    # Simple variable, permet de passer d'un écran à l'autre dans une meme
+    # fenetre
     if etatactuel == "Jeu":
     ######################Evenements
         for event in pygame.event.get():
@@ -230,11 +247,15 @@ while not arret:
             # On met le programme en pause si la touche espace est appuyée
             if event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
                     
+                    #initialisation des textes
                     init_titre("Pause", largeur/2 - 200, 25)
                     textequitter=Textes.Textes(police,50)
                     textequitter.print_texte("Quitter",centre[0],centre[1]+50)
                     liste_textes.add(textequitter)
                     
+                    #on refait appel aux fonctions de draw et display car
+                    #on est maintenant dans une boucle à part tant qu'on 
+                    #est sur le menu de pause
                     liste_textes.draw(fenetre)
                     pygame.display.flip()
                     while not nopause:
@@ -242,13 +263,16 @@ while not arret:
                             if event.type == pygame.KEYDOWN:
                                 nopause = True
                                 vidageliste(liste_textes)
-                            #
+                            # On détecte la collision entre le pointeur de la souris
+                            # et le texte quitter, si il y a clic et collision alors
+                            # le joueur souhaite quitter, on sort de la boucle de pause
+                            # et du programme principal
                             elif textequitter.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
                                 nopause = True
                                 arret = True
 
             # On tire avec le clic de la souris
-            elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
+            elif event.type == pygame.MOUSEBUTTONDOWN :
                 tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
 
 
@@ -258,7 +282,13 @@ while not arret:
 
         # Collision entre le joueur et : Ennemis, tirs ennemis, bonus
         for adetruire in liste_detruits:
+			#spritecollide vérifie simplement si les coordonnées d'un objet adetruire
+			#quelconque ne sont pas les mêmes qu'un objet de la liste_joueur (soit le vaisseau)
+			#puis si c'est le cas, ces objets sont placés dans liste_collision_detruits
             liste_collision_detruits = pygame.sprite.spritecollide(adetruire, liste_joueur, False)
+            
+            #lorsqu'un objet est dans cette liste, c'est qu'une collision a eu lieu entre le joueur
+            #et un objet destructible (tir, ennemi, bonus)
             for detruit in liste_collision_detruits:
                 if adetruire.ennemi:
                     if not joueur.immunite:
@@ -269,13 +299,18 @@ while not arret:
                         explosion(joueur.centrecanon[0], joueur.centrecanon[1])
                         heuredeces = pygame.time.get_ticks()
                 elif adetruire.bonus:
-                    if not joueur.immunite:
+                    if not joueur.immunite: #bonus inopérants si le joueur vient de mourir
+                        # on demande l'heure en ms et on l'enregistre: c'est le moment ou
+                        # le bonus est activé, cette variable permettra de la désactiver
+                        # au bout d'une durée déterminée plus tard
                         delaibonus = pygame.time.get_ticks()
                         if adetruire.plus:
                             nombretir = 3
                         elif adetruire.rond:
                             perforant = True
-                        explosion(adetruire.rect.x, adetruire.rect.y) #Test d'explosiooon
+                        # Le bonus explose, est actif, le vaisseau n'est pas détruit
+                        # Sinon à quoi bon chercher les bonus?
+                        explosion(adetruire.rect.x, adetruire.rect.y)
                         adetruire.kill()
 
         #Collisions entre une balle alliée et un ennemi
@@ -285,17 +320,20 @@ while not arret:
                 # si il est en collision avec le ou les objets mentionnés
                 liste_collision_monstre = pygame.sprite.spritecollide(touche, liste_monstre, False)
                 for objet in liste_collision_monstre:
-                        explosion(objet.rect.x, objet.rect.y) #explosion
+                        explosion(objet.rect.x, objet.rect.y)
                         objet.kill()
+                        #la "balle" tirée est detruite uniquement si elle 
+                        #n'est pas perforante, auquel cas elle continue sa course
                         if not perforant:
                             touche.kill()
                         score += 100
-                        print(score)
+                        """debug"""print(score)
 
     #####################Evenements
 
         # Horloge rafraichie à chaque image
         temps = pygame.time.get_ticks()
+        # on lance une vague de monstres toutes les 5000ms
         if temps%5000<=50:
             vaguemonstre()
     ### Gestion de bonus aléatoire
@@ -303,7 +341,9 @@ while not arret:
         # Une chance sur 1000 à chaque image de faire naitre un bonus
         loterie = random.randrange(0, 1000)
 
-        # Le bonus apparait aléatoirement en haut de l'écran
+        # Le bonus apparait aléatoirement en haut de l'écran si la loterie
+        # aléatoire est égale à un nombre choisi, peu importe lequel entre
+        # 0 et 1000
         if loterie == 3:
             #Tirage au sort pour savoir quel bonus va sortir
             quelbonus = random.randrange(1, 3)
@@ -336,6 +376,7 @@ while not arret:
 
         if temps - heuredeces >= 2500 and temps - heuredeces < 7500 and joueur.immunite:
             if temps - heuredeces < 2600 and joueur.vie > 0:
+				#bruitage, réapparition tant qu'il reste des vies
                 bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
                 bruit_reapparition.play()
 
@@ -347,11 +388,17 @@ while not arret:
                 son_gameover.play(0,0,400)
                 vidageliste(liste_tout)
                 etatactuel = "GameOver"
+            
+            #Le joueur clignote, son déplacement n'est plus possible que sur un axe vertical
+            #le temps de sa réappariton
 
             joueur.cligno()
             joueur.rect.x = largeur/20
             joueur.rect.y = pygame.mouse.get_pos()[1]
+            #On force la position de la souris là ou est le vaisseau , anti triche
             pygame.mouse.set_pos([joueur.rect.x, joueur.rect.y])
+        
+        #Le joueur n'est plus immune au bout de 7.5s et ne clignote plus
         elif temps - heuredeces > 7500:
             joueur.immunite = False
             joueur.image.set_alpha(255)
@@ -360,8 +407,9 @@ while not arret:
     elif etatactuel == "Score":
         if initialisation <1 :
             initialisation += 1
+            # Tri de l'ordre des scores du fichier texte
             tri_score(meilleurs_scores)            
-            # Reinitialisation des meilleurs scores, au cas ou un record ait été battu
+            # Reinitialisation des meilleurs scores, au cas ou un record ait été battu précédemment
             meilleurs_scores = lire_score()
             
             init_titre("Meilleurs scores", largeur/2 - 200, 25)
@@ -369,10 +417,13 @@ while not arret:
             boutonmenu.print_texte(" <= Menu ",0,hauteur-50)
             liste_textes.add(boutonmenu)
             
+            # pour chaque score dans le fichier texte on initialise une
+            # ligne affichée du type numéro - nom : score
             for a in range (1,len(meilleurs_scores)+1):
                 b= str(a)+" - "+meilleurs_scores[a-1][0]+":"
                 init_score(meilleurs_scores[a-1][1],b,350,a*(hauteur/6))
         
+        # utilisation d'un texte en guise de bouton , voir plus haut le menu pause
         for event in pygame.event.get():
             if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
                 arret = True
@@ -398,12 +449,15 @@ while not arret:
         # faire défiler le score et le gameover au bout de 10s (60frames affichés par s)
             if compteimage >= 60*10:
                 texte.rect.y -= 2
-                    
+        
+        # Passage à l'écran des scores lorsque le défilement est terminé:
+        # Au dela de certaines coordonnées, tout objet sortant de l'écran
+        # Est détruit d'ou la longueur de la liste de texte qui est nulle
         if len(liste_textes) == 0:
             etatactuel = "Score"
             initialisation = 0
 
-
+    # Option commune, peu importe le menu, si le joueur quitte, le jeu s'arrete
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             arret = True
