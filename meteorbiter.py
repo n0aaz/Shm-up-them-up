@@ -13,8 +13,8 @@ nom_joueur = input('Quel est ton nom?')
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 60*16
-hauteur = 60*9
+largeur = 64*16
+hauteur = 64*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
@@ -275,9 +275,11 @@ while not arret:
 
             # On tire avec le clic de la souris
             elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
-                tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
-
-
+                if quelvaisseau == 1 or quelvaisseau == 3:
+                    tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
+                elif quelvaisseau == 2:
+                    tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
+                    tirer(joueur.centrecanon2[0], joueur.centrecanon2[1], nombretir, perforant, False)
         liste_detruits.add(liste_tir, liste_monstre, liste_bonus)
 
     ###Collisions

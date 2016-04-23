@@ -109,7 +109,8 @@ class Vaisseau2(Vaisseau):
 		self.rect = self.image.get_rect()
 
         # On définit des coordonnées du centre du canon pour faciliter le placement ultérieur
-		self.centrecanon = [self.rect.x + self.taille[0] / 2 + 30, self.rect.y + self.taille[1] / 2 - 1]
+		self.centrecanon = [self.rect.x + 117, self.rect.y + 10]
+		self.centrecanon2 = [self.rect.x + 117, self.rect.y + 90]
         
 		#compteur c qui va nous permettre d'incrémenter l'index de liens
 		self.c = 0
@@ -122,6 +123,8 @@ class Vaisseau2(Vaisseau):
 		#on réutilise le update défini pour notre premier vaisseau
 		super().update()
 
+		self.centrecanon = [self.rect.x + 117, self.rect.y + 10]
+		self.centrecanon2 = [self.rect.x + 117, self.rect.y + 90]
 		#conditions if > plutot que modulo pour éviter que les variables
 		#prennent des valeurs trop grandes et surchargent la mémoire
 
@@ -164,5 +167,8 @@ class Vaisseau3(Vaisseau2):
 
 		self.lienframe = ["ressources/image/vaisseau3f1.png","ressources/image/vaisseau3f2.png","ressources/image/vaisseau3f3.png"]
 
-	
+	def update(self):
+		super().update()
+		self.centrecanon = [self.rect.x + self.taille[0] / 2 + 30, self.rect.y + self.taille[1] / 2 - 1]
+
 
