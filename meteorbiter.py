@@ -59,6 +59,7 @@ def enreg_score(nom,score):
     #attribut a = append, ajout au fichier
 
     ligne = nom + " " + str(score)
+    
     with open("ressources/texte/score.txt", "a") as fichier:
         fichier.write(ligne + "\n")
 
@@ -101,7 +102,7 @@ def init_score(entree,entree2,x,y):
     liste_textes.add(afficheurscore)
     
     afficheurscore2 = Textes.Textes(police, 35)
-    afficheurscore2.print_texte(str(entree),x+200,y)
+    afficheurscore2.print_texte(str(entree),x+400,y)
     liste_textes.add(afficheurscore2)
     
 ###Menus###
@@ -411,9 +412,10 @@ while not arret:
     elif etatactuel == "Score":
         if initialisation <1 :
             initialisation += 1
-            # Tri de l'ordre des scores du fichier texte
-            tri_score(meilleurs_scores)            
             # Reinitialisation des meilleurs scores, au cas ou un record ait été battu précédemment
+            meilleurs_scores = lire_score()
+            # Tri de l'ordre des scores du fichier texte
+            tri_score(meilleurs_scores)
             meilleurs_scores = lire_score()
             
             init_titre("Meilleurs scores", largeur/2 - 200, 25)
@@ -442,8 +444,9 @@ while not arret:
 		    #on enregistre le score dans le fichier uniquement si celui ci
             #est meilleur que le dernier meilleur score et que le fichier
             #ne contient pas plus de 5 scores
-            if score > int(meilleurs_scores[-1][1]):
+            if int(score) > int(meilleurs_scores[-1][1]):
                 enreg_score(nom_joueur,score)
+                print(score,meilleurs_scores[-1][1])
             initialisation +=1
             init_titre("Game Over", centre[0]-180, centre[1])
             init_score(score,"score:",position_score[0],position_score[1])

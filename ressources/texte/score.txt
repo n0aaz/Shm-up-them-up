@@ -1,4 +1,6 @@
+Tentacule 5100
 zib 3400
 aboz 1200
+tiir 600
 zob 300
 zab 200
