@@ -15,6 +15,12 @@ class Vaisseau(pygame.sprite.Sprite):
         # Ne pas oublier de rendre le fond blanc du vaisseau transparent
         self.image = pygame.image.load("ressources/image/vaisseau.png").convert()
         self.image.set_colorkey([255, 255, 255])
+        
+        # Attribut demo pour les vaisseaux de démonstration (menu de sélection des 
+        # vaisseaux)
+        self.demo= False
+        
+        self.choix= False
 
         # Taille de l'image du vaisseau, pour faciliter les calculs
         self.taille = self.image.get_size()
@@ -43,10 +49,24 @@ class Vaisseau(pygame.sprite.Sprite):
         # Actualisation de la position calculée du centre du canon
         self.centrecanon = [self.rect.x + self.taille[0] / 2 + 15, self.rect.y + self.taille[1] / 2 - 1]
 
-        # La position du vaisseau sera donc celle de la souris
-        if not self.immunite:
+        # La position du vaisseau sera donc celle de la souris seulement si le vaisseau
+        # n'est pas un vaisseau de démonstration
+        if not self.immunite and not self.demo:
             self.rect.x = position[0]
             self.rect.y = position[1]
+        
+        # Encadrement du vaisseau de démo lorsque la souris passe dessus
+        if self.demo :
+            if self.rect.collidepoint(pygame.mouse.get_pos()) or self.choix:
+                pygame.draw.rect(self.image,[125, 125, 125],self.image.get_rect(),5)
+            
+            #lorsque la souris n'est plus dessus, retour à l'image initiale
+            else:
+                self.image = pygame.image.load("ressources/image/vaisseau.png").convert()
+                self.image.set_colorkey([255, 255, 255])
+            
+            
+			
 
     def mort(self):
 
@@ -113,10 +133,16 @@ class Vaisseau2(Vaisseau):
 		if self.c > 2 :
 			self.c = 0
 			
-		if not self.immunite:
+		if not self.immunite or self.demo:
 		    self.image = pygame.image.load(self.lienframe[self.c]).convert()
 		    self.image.set_colorkey([255, 255, 255])
 		self.d += 1
+        
+		if self.demo:
+			if self.rect.collidepoint(pygame.mouse.get_pos()) or self.choix:
+				pygame.draw.rect(self.image,[125, 125, 125],self.image.get_rect(),5)
+				#on stocke la sélection du vaisseau comme attribut pour pouvoir le réutiliser
+
 		
 class Vaisseau3(Vaisseau2):
 	def __init__(self):

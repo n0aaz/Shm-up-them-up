@@ -53,6 +53,60 @@ score = 0
 compteimage = 0
 initialisation = 0
 
+###Scores###
+def enreg_score(nom,score):
+    #on initialise le fichier texte
+    #attribut a = append, ajout au fichier
+
+    ligne = nom + " " + str(score)
+    with open("ressources/texte/score.txt", "a") as fichier:
+        fichier.write(ligne + "\n")
+
+def lire_score():
+	# On lit le fichier texte, attribut "r" pour "read"
+	with open("ressources/texte/score.txt", "r") as fichier:
+		
+		lignes = fichier.readlines()
+		scores = []
+		for ligne in lignes:
+			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
+			scores.append(ligne.split())
+		for score in scores:
+			score[1] = int(score[1])
+		return scores
+
+  # En attente de la fonction de tri décroissant
+def tri_score(liste):
+	
+	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
+	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
+    liste_tri = Alicia.tricroissant(liste)
+    with open("ressources/texte/score.txt", "w") as fichier:
+        for score in liste_tri:
+            ligne = score[0] + " " + str(score[1])
+            fichier.write(ligne + "\n")
+
+###Scores###
+
+###Menus### - En tant que fonction pour faciliter une utilisation ultérieure
+def init_titre(entree,x,y):
+    #Initialisation du texte (police, taille) puis affichage dans les positions données
+    titre = Textes.Textes(police, 50)
+    titre.print_texte(entree,x,y)
+    liste_textes.add(titre)
+
+def init_score(entree,entree2,x,y):
+    afficheurscore = Textes.Textes(police, 35)
+    afficheurscore.print_texte(entree2,x,y)
+    liste_textes.add(afficheurscore)
+    
+    afficheurscore2 = Textes.Textes(police, 35)
+    afficheurscore2.print_texte(str(entree),x+200,y)
+    liste_textes.add(afficheurscore2)
+    
+###Menus###
+
+###Initialisations###
 # Initialisation du jeu uniquement si on est dans l'étatactuel jeu
 if etatactuel == "Jeu":
 	
@@ -80,24 +134,7 @@ if etatactuel == "Jeu":
     nombretir = 1
     perforant = False
 
-###Menus### - En tant que fonction pour faciliter une utilisation ultérieure
-def init_titre(entree,x,y):
-    #Initialisation du texte (police, taille) puis affichage dans les positions données
-    titre = Textes.Textes(police, 50)
-    titre.print_texte(entree,x,y)
-    liste_textes.add(titre)
-
-def init_score(entree,entree2,x,y):
-    afficheurscore = Textes.Textes(police, 35)
-    afficheurscore.print_texte(entree2,x,y)
-    liste_textes.add(afficheurscore)
-    
-    afficheurscore2 = Textes.Textes(police, 35)
-    afficheurscore2.print_texte(str(entree),x+200,y)
-    liste_textes.add(afficheurscore2)
-    
-###Menus###
-
+###Initialisations###
 def vaguemonstre():
                 mode = random.randrange(1, 4)
                 if mode == 1:
@@ -136,39 +173,6 @@ def surlignage():
             texte.surligne = True
         else:
             texte.surligne = False
-
-def enreg_score(nom,score):
-    #on initialise le fichier texte
-    #attribut a = append, ajout au fichier
-
-    ligne = nom + " " + str(score)
-    with open("ressources/texte/score.txt", "a") as fichier:
-        fichier.write(ligne + "\n")
-
-def lire_score():
-	# On lit le fichier texte, attribut "r" pour "read"
-	with open("ressources/texte/score.txt", "r") as fichier:
-		
-		lignes = fichier.readlines()
-		scores = []
-		for ligne in lignes:
-			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
-			scores.append(ligne.split())
-		for score in scores:
-			score[1] = int(score[1])
-		return scores
-
-# En attente de la fonction de tri décroissant
-def tri_score(liste):
-	
-	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
-	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
-    liste_tri = Alicia.tricroissant(liste)
-    with open("ressources/texte/score.txt", "w") as fichier:
-        for score in liste_tri:
-            ligne = score[0] + " " + str(score[1])
-            fichier.write(ligne + "\n")
-
 
 # Fonction/animation explosion lors de la mort du vaisseau
 
@@ -245,8 +249,8 @@ while not arret:
         for event in pygame.event.get():
 
             # On met le programme en pause si la touche espace est appuyée
-            if event.type == pygame.KEYDOWN :#and event.key == pygame.K_ESCAPE:
-                    
+            if event.type == pygame.KEYDOWN :
+                if event.key == pygame.K_ESCAPE:
                     #initialisation des textes
                     init_titre("Pause", largeur/2 - 200, 25)
                     textequitter=Textes.Textes(police,50)
@@ -272,7 +276,7 @@ while not arret:
                                 arret = True
 
             # On tire avec le clic de la souris
-            elif event.type == pygame.MOUSEBUTTONDOWN :
+            elif event.type == pygame.MOUSEBUTTONDOWN and not joueur.immunite:
                 tirer(joueur.centrecanon[0], joueur.centrecanon[1], nombretir, perforant, False)
 
 
@@ -327,7 +331,7 @@ while not arret:
                         if not perforant:
                             touche.kill()
                         score += 100
-                        """debug"""print(score)
+                        print(score)#"""debug"""
 
     #####################Evenements
 
@@ -403,7 +407,6 @@ while not arret:
             joueur.immunite = False
             joueur.image.set_alpha(255)
 
-
     elif etatactuel == "Score":
         if initialisation <1 :
             initialisation += 1
@@ -428,7 +431,6 @@ while not arret:
             if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
                 arret = True
         
-
     elif etatactuel == "GameOver":
 
         compteimage += 1
@@ -456,6 +458,68 @@ while not arret:
         if len(liste_textes) == 0:
             etatactuel = "Score"
             initialisation = 0
+
+    elif etatactuel == "Vaisseau":
+		
+		#initialisation de la mise en page, des éléments
+        if initialisation<1:
+            initialisation+=1
+			
+            init_titre("Vaisseaux",largeur/2-100,hauteur/10)
+            init_score("","choisissez votre vaisseau mon colonel",largeur/2-400,2*hauteur/10)    
+            
+            #on initialise les vaisseaux de démonstration
+            v1=vaisseau.Vaisseau()
+            v1.demo = True
+            v2=vaisseau.Vaisseau2()
+            v2.demo = True
+            v3=vaisseau.Vaisseau3()
+            v3.demo = True
+            
+            liste_joueur.add(v1,v2,v3)
+            liste_tout.add(liste_joueur)
+            
+            #On initialise leurs positions, fixes
+            v1.rect.x = (largeur/8)
+            v1.rect.y = hauteur/2
+            v2.rect.x = 3*(largeur/8)
+            v2.rect.y = hauteur/2
+            v3.rect.x = 5*(largeur/8)
+            v3.rect.y = hauteur/2
+            
+            init_score("","STX-645",v1.rect.x,v1.rect.y + v1.taille[1] + 25)
+            init_score("","Lamernoir",v2.rect.x,v2.rect.y + v2.taille[1] + 25)
+            init_score("","Minipoulpe",v3.rect.x,v3.rect.y + v3.taille[1] + 25)
+            
+            boutonmenu = Textes.Textes(police, 50)
+            boutonmenu.print_texte(" <= Menu ",0,hauteur-50)
+            liste_textes.add(boutonmenu)
+    
+        #Sélections à la souris du vaisseau
+        if v1.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+            quelvaisseau = 1
+            v1.choix=True
+            v2.choix=False
+            v3.choix=False
+            
+        elif v2.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+            quelvaisseau = 2
+            v1.choix=False
+            v2.choix=True
+            v3.choix=False
+
+        elif v3.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+            quelvaisseau = 3
+            v1.choix=False
+            v2.choix=False
+            v3.choix=True
+        
+        #Bouton menu comme dans le menu des scores pour retourner au menu (quitte
+        #le jeu pour l'instant car le menu n'est pas terminé)
+        if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                arret = True
+            
+
 
     # Option commune, peu importe le menu, si le joueur quitte, le jeu s'arrete
     for event in pygame.event.get():
