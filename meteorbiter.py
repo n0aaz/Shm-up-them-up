@@ -45,7 +45,7 @@ pygame.mouse.set_visible(True)
 
 # Paramètres d'initialisation du jeu, etatactuel permet de choisir sur
 # quel menu démarrer, quelvaisseau permet de choisir le vaisseau 1,2 ou 3
-etatactuel = "Jeu"
+etatactuel = "Vaisseau"
 quelvaisseau = 1
 arret = False
 score = 0
@@ -106,35 +106,6 @@ def init_score(entree,entree2,x,y):
     
 ###Menus###
 
-###Initialisations###
-# Initialisation du jeu uniquement si on est dans l'étatactuel jeu
-if etatactuel == "Jeu":
-	
-    #chargement du vaisseau différent selon la sélection du joueur
-    if quelvaisseau == 1 :
-        joueur = vaisseau.Vaisseau()
-
-    elif quelvaisseau == 2:
-        joueur = vaisseau.Vaisseau2()
-        
-    elif quelvaisseau == 3:
-        joueur = vaisseau.Vaisseau3()
-	
-	#Lancement de la musique
-    musique.play(0,0,400)
-    #Ajout du vaisseau du joueur et initialisation à un point de départ
-    liste_tout.add(joueur)
-    liste_joueur.add(joueur)
-    joueur.rect.x = largeur/20
-    joueur.rect.y = hauteur/2
-    #heuredeces et delaibonus doivent etre initialisés pour permettre
-    #la résurrection du joueur et la gestion des durées de bonus
-    heuredeces = 0
-    delaibonus = 0
-    nombretir = 1
-    perforant = False
-
-###Initialisations###
 def vaguemonstre():
                 mode = random.randrange(1, 4)
                 if mode == 1:
@@ -245,6 +216,33 @@ while not arret:
     # Simple variable, permet de passer d'un écran à l'autre dans une meme
     # fenetre
     if etatactuel == "Jeu":
+		
+    ######################Initialisation
+        if initialisation<1:
+            initialisation+=1
+            #chargement du vaisseau différent selon la sélection du joueur
+            if quelvaisseau == 1 :
+                joueur = vaisseau.Vaisseau()
+            
+            elif quelvaisseau == 2:
+                joueur = vaisseau.Vaisseau2()
+                
+            elif quelvaisseau == 3:
+                joueur = vaisseau.Vaisseau3()
+	        
+	        #Lancement de la musique
+            musique.play(0,0,400)
+            #Ajout du vaisseau du joueur et initialisation à un point de départ
+            liste_tout.add(joueur)
+            liste_joueur.add(joueur)
+            joueur.rect.x = largeur/20
+            joueur.rect.y = hauteur/2
+            #heuredeces et delaibonus doivent etre initialisés pour permettre
+            #la résurrection du joueur et la gestion des durées de bonus
+            heuredeces = 0
+            delaibonus = 0
+            nombretir = 1
+            perforant = False
     ######################Evenements
         for event in pygame.event.get():
 
@@ -517,7 +515,10 @@ while not arret:
         #Bouton menu comme dans le menu des scores pour retourner au menu (quitte
         #le jeu pour l'instant car le menu n'est pas terminé)
         if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-                arret = True
+                initialisation=0
+                vidageliste(liste_joueur)
+                vidageliste(liste_textes)
+                etatactuel="Jeu"
             
 
 
