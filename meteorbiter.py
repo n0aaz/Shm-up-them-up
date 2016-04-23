@@ -391,6 +391,7 @@ while not arret:
                 musique.stop()
                 son_gameover.play(0,0,400)
                 vidageliste(liste_tout)
+                initialisation = 0
                 etatactuel = "GameOver"
             
             #Le joueur clignote, son déplacement n'est plus possible que sur un axe vertical
