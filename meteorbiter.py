@@ -80,7 +80,7 @@ def tri_score(liste):
 	
 	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
 	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
-    liste_tri = Alicia.tricroissant(liste)
+    liste_tri = Alicia.tridecroissant(liste)
     with open("ressources/texte/score.txt", "w") as fichier:
         for score in liste_tri:
             ligne = score[0] + " " + str(score[1])

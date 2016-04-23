@@ -1,4 +1,4 @@
-zab 200
-zob 300
-aboz 1200
 zib 3400
+aboz 1200
+zob 300
+zab 200
