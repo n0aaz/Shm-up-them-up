@@ -248,7 +248,7 @@ while not arret:
     ######################Evenements
         for event in pygame.event.get():
 
-            # On met le programme en pause si la touche espace est appuyée
+            # On met le programme en pause si la touche échap est appuyée
             if event.type == pygame.KEYDOWN :
                 if event.key == pygame.K_ESCAPE:
                     #initialisation des textes
