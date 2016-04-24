@@ -13,8 +13,8 @@ nom_joueur = input('Quel est ton nom?')
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 64*16
-hauteur = 64*9
+largeur = 60*16
+hauteur = 60*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
@@ -38,6 +38,8 @@ liste_textes = pygame.sprite.Group()
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
 musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
 police = 'ressources/polices/Minecraft.ttf'
+image = pygame.image.load("ressources/image/vaisseau.png").convert()
+image.set_colorkey([255,255,255])
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
 clock = pygame.time.Clock()
@@ -561,8 +563,12 @@ while not arret:
     fenetre.fill([0, 0, 0])
     
     ###Alicia
-    Alicia.afficheur_vies(fenetre,joueur)
-    Alicia.afficheur_scores(fenetre,score,police)
+    try:
+        if etatactuel == "Jeu" :
+            Alicia.afficheur_vies(fenetre,joueur,image)
+            Alicia.afficheur_scores(fenetre,score,police)
+    except NameError:
+        pass
     
     # Rendu de tous les objets
     liste_tout.draw(fenetre)
