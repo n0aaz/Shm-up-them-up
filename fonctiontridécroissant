@@ -1,0 +1,26 @@
+def minimum (x) :
+    lg  = len(x)
+    min = x[0]
+    for i in range (lg):
+        if x[i][1]<min[1] :
+            min = x[i]
+    return (min)
+
+def tricroissant(x):
+    tri = []
+    lg  = len(x)
+    for i in range (lg) :
+        tri.append(minimum(x))
+        print (tri)
+        min = minimum(x)
+        x.remove (min)
+    return tri
+    
+def tridecroissant(x):
+	y = tricroissant(x)
+	tri = []
+	lg = len(y)
+	for i in range(-1,-lg-1,-1):
+		tri.append(y[i])
+		print (tri)
+	return tri
