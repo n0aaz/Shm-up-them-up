@@ -559,7 +559,11 @@ while not arret:
 
     # Nettoyage de l'écran
     fenetre.fill([0, 0, 0])
-
+    
+    ###Alicia
+    Alicia.afficheur_vies(fenetre,joueur)
+    Alicia.afficheur_scores(fenetre,score,police)
+    
     # Rendu de tous les objets
     liste_tout.draw(fenetre)
 

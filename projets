@@ -26,8 +26,10 @@ long_line_column=72
 current_page=3
 FILE_NAME_0=605;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Flibrairies%2Ftir.py;0;4
 FILE_NAME_1=132;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Flibrairies%2FTextes.py;0;4
-FILE_NAME_2=5285;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Flibrairies%2Fvaisseau.py;0;4
-FILE_NAME_3=1017;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Fmeteorbiter.py;0;4
+FILE_NAME_2=6413;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Flibrairies%2Fvaisseau.py;0;4
+FILE_NAME_3=15232;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Fmeteorbiter.py;0;4
+FILE_NAME_4=110;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2FAlicia.py;0;4
+FILE_NAME_5=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Faaz%2Fshmup%2FShm-up-them-up%2Flibrairies%2Fmonstre.py;0;4
 
 [VTE]
 last_dir=/home/aaz
