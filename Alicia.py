@@ -1,3 +1,5 @@
+from libraries import Textes
+
 def minimum (x) :
     lg  = len(x)
     min = x[0]
