@@ -27,8 +27,6 @@ def tridecroissant(x):
 
 def afficheur_vies(fenetre,joueur):
     hauteur=60*9
-    image = pygame.image.load("ressources/image/vie.png").convert()
-    image.set_colorkey([255,255,255])
     for a in range (0,joueur.vie):
         fenetre.blit(image,[50*a,hauteur-100])
         
