@@ -25,7 +25,7 @@ def tridecroissant(x):
 		print (tri)
 	return tri
 
-def afficheur_vies(fenetre,joueur):
+def afficheur_vies(fenetre,joueur,image):
     hauteur=60*9
     for a in range (0,joueur.vie):
         fenetre.blit(image,[50*a,hauteur-100])
