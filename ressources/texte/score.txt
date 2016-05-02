@@ -1,10 +1,5 @@
-io 5100
 Tentacule 5100
+io 5100
 sq 4900
 yo 3900
 zib 3400
-fsd 1300
-aboz 1200
-tiir 600
-zob 300
-zab 200

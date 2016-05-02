@@ -73,20 +73,24 @@ def lire_score():
 		for ligne in lignes:
 			# La fonction split() permet de découper une ligne en mots (jusqu'à ce qu'elle rencontre un espace)
 			scores.append(ligne.split())
+		# Les scores dans la liste sont en caractères or on veut des entiers
 		for score in scores:
 			score[1] = int(score[1])
 		return scores
 
-  # En attente de la fonction de tri décroissant
 def tri_score(liste):
 	
 	# La fonction tridecroissant range les scores d'une liste de la forme [nom,score]
 	# par ordre décroissant puis on réecrit notre liste des scores dans notre fichier
     liste_tri = Alicia.tridecroissant(liste)
     with open("ressources/texte/score.txt", "w") as fichier:
+        compteur=0
         for score in liste_tri:
-            ligne = score[0] + " " + str(score[1])
-            fichier.write(ligne + "\n")
+            compteur += 1
+            #On ne garde que les 5 meilleurs scores
+            if compteur <= 5:
+                ligne = score[0] + " " + str(score[1])
+                fichier.write(ligne + "\n")
 
 ###Scores###
 
