@@ -1,11 +1,11 @@
 import pygame
 
-
 class Vaisseau(pygame.sprite.Sprite):
     """ On crée une classe vaisseau , cette classe herite des caractéristiques de la librairie Sprite de Pygame qui va
      Servir a faire une image fixe et mobile du vaisseau"""
 
     def __init__(self):
+
         """ Le constructeur de la classe """
 
         # On appelle le constructeur de la classe parent de notre classe, c'est à dire la classe Sprite de Pygame
@@ -52,8 +52,9 @@ class Vaisseau(pygame.sprite.Sprite):
         # La position du vaisseau sera donc celle de la souris seulement si le vaisseau
         # n'est pas un vaisseau de démonstration
         if not self.immunite and not self.demo:
-            self.rect.x = position[0]
-            self.rect.y = position[1]
+            if position[0] < (80*16) - self.taille[0] and position[1] < (80*9) - self.taille[1]:
+                self.rect.x = position[0]
+                self.rect.y = position[1]
         
         # Encadrement du vaisseau de démo lorsque la souris passe dessus
         if self.demo :
@@ -65,8 +66,7 @@ class Vaisseau(pygame.sprite.Sprite):
                 self.image = pygame.image.load("ressources/image/vaisseau.png").convert()
                 self.image.set_colorkey([255, 255, 255])
             
-            
-			
+
 
     def mort(self):
 
