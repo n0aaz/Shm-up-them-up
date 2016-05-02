@@ -252,9 +252,9 @@ while not arret:
             if event.type == pygame.KEYDOWN :
                 if event.key == pygame.K_ESCAPE:
                     #initialisation des textes
-                    init_titre("Pause", largeur/2 - 200, 25)
+                    init_titre("Pause", largeur/2 , 25)
                     textequitter=Textes.Textes(police,50)
-                    textequitter.print_texte("Quitter",centre[0],centre[1]+50)
+                    textequitter.print_texte("Quitter",largeur/2,hauteur/2)
                     liste_textes.add(textequitter)
                     
                     #on refait appel aux fonctions de draw et display car
@@ -564,7 +564,7 @@ while not arret:
     ###Alicia
     try:
         if etatactuel == "Jeu" :
-            Alicia.afficheur_vies(fenetre,joueur,image)
+            Alicia.afficheur_vies(fenetre,hauteur,joueur,image)
             Alicia.afficheur_scores(fenetre,score,police)
     except NameError:
         pass
