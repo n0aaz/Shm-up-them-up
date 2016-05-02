@@ -80,7 +80,7 @@ class Explosion(Tir):
         self.couleur = blanc
         self.image = pygame.Surface([4, 4])
         pygame.draw.ellipse(self.image, self.couleur, self.rect)
-        self.vitesse = 4
+        self.vitesse = 9
 
 
 """Les etoiles sont à part, elles se déplacent toujours dans le sens contraire du joueur, et plus lentement

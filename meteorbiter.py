@@ -2,8 +2,7 @@ import pygame
 import random
 
 """ On appelle nos classes définies dans des fichiers à part"""
-from librairies import monstre, bonus, tir, vaisseau, Textes
-import Alicia
+from librairies import monstre, bonus, tir, vaisseau, Textes, Alicia
 
 # On demande le nom du joueur avant l'initialisation de pygame
 # Pour que l'attention du joueur soit focalisée sur le terminal
@@ -13,8 +12,8 @@ nom_joueur = input('Quel est ton nom?')
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 60*16
-hauteur = 60*9
+largeur = 80*16
+hauteur = 80*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
@@ -38,7 +37,7 @@ liste_textes = pygame.sprite.Group()
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
 musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
 police = 'ressources/polices/Minecraft.ttf'
-image = pygame.image.load("ressources/image/vaisseau.png").convert()
+image = pygame.image.load("ressources/image/life.png").convert()
 image.set_colorkey([255,255,255])
 
 # Initialisation de clock pour gérer la vitesse de rafraichissement
@@ -156,7 +155,7 @@ def explosion(coor_x, coor_y):
     # inoffensifs
     # On initialise les directions dans une liste pour pouvoir les utiliser
     # tous en meme temps
-    directions = ["N", "S", "E", "O", "NE", "NO", "SE", "SO"]
+    directions = [ "NE", "NO", "SE", "SO"]
     for petitcompteur in range(len(directions)):
         b = tir.Explosion()
         liste_explosion.add(b)
