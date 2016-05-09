@@ -33,6 +33,7 @@ liste_joueur = pygame.sprite.Group()
 liste_monstre = pygame.sprite.Group()
 liste_detruits = pygame.sprite.Group()
 liste_textes = pygame.sprite.Group()
+liste_popup = pygame.sprite.Group()
 
 son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
 musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
@@ -111,6 +112,13 @@ def init_score(entree,entree2,x,y):
     liste_textes.add(afficheurscore2)
     
 ###Menus###
+
+def popup_score(score,x,y):
+    ligne="+"+str(score)
+    afficheurscore = Textes.Textes(police, 10)
+    afficheurscore.print_texte(ligne,x,y)
+    liste_textes.add(afficheurscore)
+    return pygame.time.get_ticks()
 
 def vaguemonstre():
                 mode = random.randrange(1, 4)
@@ -376,6 +384,8 @@ while not arret:
         # Offrir une vie au joueur tous les 10000 points (c'est déjà assez dur comme ça)
         if score % 10000 == 0 and score > 0:
             joueur.vie += 1
+            score += 1000
+
             
 
     ###Resurrection du joueur
