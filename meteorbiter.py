@@ -1,3 +1,15 @@
+"""# # # # # # # # # # Crédits # # # # # # # # # #
+Meteorbiter V0.1
+
+
+La structure générale de ce jeu "Meteorbiter", ainsi que les bibliothèques la composant sont la propriété de l'éditeur.
+Toute reproduction et/ou exploitation partielle ou totale des contenus et services proposés par le jeu "Meteorbiter", par
+quelque procédé que ce soit, sans l'autorisation préalable et par écrit de BREDOUX Théo, DUGAIT Alicia, OZDEMIR Serdar est
+strictement interdire et serait susceptible de constituer une contrefaçon au sens des articles L335-2 et suivants du
+Code de la propriété intellectuelle.
+
+"""
+
 import pygame
 import random
 
@@ -21,7 +33,7 @@ position_score = [centre[0]-160, centre[1] + 180]
 
 # Mise en place de la fenetre Pygame
 fenetre = pygame.display.set_mode([largeur, hauteur])
-pygame.display.set_caption("MeteOrbitercr")
+pygame.display.set_caption("MeteOrbiter")
 
 # Groupements/listes d'objets
 liste_tir = pygame.sprite.Group()
