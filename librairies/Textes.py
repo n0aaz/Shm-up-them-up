@@ -11,7 +11,7 @@ class Textes(pygame.sprite.Sprite):
         # Choix du texte
         self.texte = "texte"
         # Choix des contours
-        self.rerender(5,5)
+        self.rendu(5,5)
         # Variable de surlignage
         self.surligne = False
         # Positionnement du centre

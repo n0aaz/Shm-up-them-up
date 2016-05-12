@@ -12,8 +12,8 @@ nom_joueur = input('Quel est ton nom?')
 pygame.init()
 
 # Taille de l'écran , on prend un ratio de 16/9
-largeur = 80*16
-hauteur = 80*9
+largeur = 60*16
+hauteur = 60*9
 
 # mise en place des positions des textes
 centre = [largeur / 2, hauteur / 2]
