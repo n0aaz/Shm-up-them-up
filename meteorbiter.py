@@ -47,7 +47,7 @@ pygame.mouse.set_visible(True)
 
 # Paramètres d'initialisation du jeu, etatactuel permet de choisir sur
 # quel menu démarrer, quelvaisseau permet de choisir le vaisseau 1,2 ou 3
-etatactuel = "Vaisseau"
+etatactuel = "menuprincipal"
 quelvaisseau = 1
 arret = False
 score = 0
@@ -252,7 +252,7 @@ while not arret:
                 joueur = vaisseau.Vaisseau3()
 	        
 	        #Lancement de la musique
-            musique.play(0,0,400)
+            #musique.play(0,0,400)
             #Ajout du vaisseau du joueur et initialisation à un point de départ
             liste_tout.add(joueur)
             liste_joueur.add(joueur)
@@ -403,7 +403,7 @@ while not arret:
 
         if temps - heuredeces >= 2500 and temps - heuredeces < 7500 and joueur.immunite:
             if temps - heuredeces < 2600 and joueur.vie > 0:
-				#bruitage, réapparition tant qu'il reste des vies
+
                 bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
                 bruit_reapparition.play()
 
@@ -546,14 +546,67 @@ while not arret:
                 initialisation=0
                 vidageliste(liste_joueur)
                 vidageliste(liste_textes)
-                etatactuel="Jeu"
+                etatactuel="menuprincipal"
 
     elif etatactuel == "menuprincipal" :
     # initialisation de la mise en page, des éléments
         if initialisation < 1:
             initialisation += 1
 
-        init_titre("Vaisseaux", largeur / 2 - 100, hauteur / 10)
+            Titrejeu =  Textes.Textes(police, 120)
+            Titrejeu.print_texte(" Meteorbiter ", 280, 70)
+            liste_textes.add(Titrejeu)
+
+            Jouer = Textes.Textes(police, 50)
+            Jouer.print_texte(" Jouer ", 450, 200)
+            liste_textes.add(Jouer)
+
+            Vais = Textes.Textes(police, 50)
+            Vais.print_texte(" Choix Vaisseau ", 450, 300)
+            liste_textes.add(Vais)
+
+            Scorebouton = Textes.Textes(police, 50)
+            Scorebouton.print_texte(" Meilleurs Scores ", 450, 400)
+            liste_textes.add(Scorebouton)
+
+            Credits = Textes.Textes(police, 50)
+            Credits.print_texte(" Credits ", 450, 500)
+            liste_textes.add(Credits)
+
+
+
+        if Scorebouton.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+            initialisation = 0
+            vidageliste(liste_textes)
+            etatactuel = "Score"
+        if Jouer.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+            initialisation = 0
+            vidageliste(liste_textes)
+            etatactuel = "Jeu"
+        if Vais.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+            initialisation = 0
+            vidageliste(liste_textes)
+            etatactuel = "Vaisseau"
+        if Credits.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+            initialisation = 0
+            vidageliste(liste_textes)
+            etatactuel = "Credits"
+
+    elif etatactuel == "Credits" :
+        if initialisation < 1:
+            initialisation += 1
+            Titrecredit = Textes.Textes(police, 120)
+            Titrecredit.print_texte(" Credits ", 280, 70)
+            liste_textes.add(Titrecredit)
+            boutonmenu = Textes.Textes(police, 50)
+            boutonmenu.print_texte(" <= Menu ", 0, hauteur - 50)
+            liste_textes.add(boutonmenu)
+        if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+            initialisation = 0
+            vidageliste(liste_joueur)
+            vidageliste(liste_textes)
+            etatactuel = "menuprincipal"
+
 
 
     # Option commune, peu importe le menu, si le joueur quitte, le jeu s'arrete
