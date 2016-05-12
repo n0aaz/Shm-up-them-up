@@ -21,7 +21,7 @@ position_score = [centre[0]-160, centre[1] + 180]
 
 # Mise en place de la fenetre Pygame
 fenetre = pygame.display.set_mode([largeur, hauteur])
-pygame.display.set_caption("MeteOrbiter (nom temporaire)")
+pygame.display.set_caption("MeteOrbitercr")
 
 # Groupements/listes d'objets
 liste_tir = pygame.sprite.Group()
@@ -121,18 +121,25 @@ def popup_score(score,x,y):
     return pygame.time.get_ticks()
 
 def vaguemonstre():
+        # Lotterie pour le choix de la vague
                 mode = random.randrange(1, 4)
                 if mode == 1:
+                    #Création d'une file de 5 monstres
                     for a in range(1, 5):
+                        #Appel à la classe Monstre
                         vador = monstre.Monstre()
+                        #Définition du mode de déplacement
                         vador.modedeplacement = "D"
+                        #Ajout dans les listes
                         liste_tout.add(vador)
                         liste_monstre.add(vador)
+                        #Positionnement de départ du monstre
                         vador.rect.y = a*hauteur/5
                         vador.rect.x = largeur+10
+                        #Possibilité de tirer
                         tirer(vador.rect.x, vador.rect.y, 1, False, True)
                 if mode == 2:
-                    for a in range(1, 10):
+                    for a in range(1, 5):
                         vador = monstre.Monstre()
                         vador.modedeplacement = "D"
                         liste_tout.add(vador)
@@ -540,7 +547,13 @@ while not arret:
                 vidageliste(liste_joueur)
                 vidageliste(liste_textes)
                 etatactuel="Jeu"
-            
+
+    elif etatactuel == "menuprincipal" :
+    # initialisation de la mise en page, des éléments
+        if initialisation < 1:
+            initialisation += 1
+
+        init_titre("Vaisseaux", largeur / 2 - 100, hauteur / 10)
 
 
     # Option commune, peu importe le menu, si le joueur quitte, le jeu s'arrete
