@@ -2,12 +2,19 @@ import pygame
 
 class Textes(pygame.sprite.Sprite):
     def __init__(self, font_path, font_size):
+        #Création de la classe
         pygame.sprite.Sprite.__init__(self)
+        # Définition de la police
         self.police = pygame.font.Font(font_path, font_size)
+        # Choix de la couleur
         self.couleur = (100,100,100)
+        # Choix du texte
         self.texte = "texte"
+        # Choix des contours
         self.rerender(5,5)
+        # Variable de surlignage
         self.surligne = False
+        # Positionnement du centre
         self.centre = 2
 
     def update(self):
@@ -20,12 +27,12 @@ class Textes(pygame.sprite.Sprite):
         else :
             self.couleur=(100, 100,100)
 
-        self.rerender(self.rect.x,self.rect.y)
+        self.rendu(self.rect.x,self.rect.y)
 
     def print_texte(self, texte_s, x, y):
         self.texte = texte_s
-        self.rerender(x,y)
-    def rerender(self, x, y):
+        self.rendu(x,y)
+    def rendu(self, x, y):
         self.image = self.police.render(self.texte, 0, self.couleur)
         self.rect = self.image.get_rect()
         self.rect.x = x
