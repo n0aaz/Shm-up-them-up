@@ -35,8 +35,8 @@ liste_detruits = pygame.sprite.Group()
 liste_textes = pygame.sprite.Group()
 liste_popup = pygame.sprite.Group()
 
-son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
-musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
+#son_gameover = pygame.mixer.Sound("ressources/son/GameOver.ogg")
+#musique = pygame.mixer.Sound("ressources/son/2080-SheLikesToPlay.ogg")
 police = 'ressources/polices/Minecraft.ttf'
 image = pygame.image.load("ressources/image/life.png").convert()
 image.set_colorkey([255,255,255])
@@ -194,7 +194,7 @@ def tirer(coor_x, coor_y, nbtir, balles_perforantes, ennemi):
     #différentes directions d'un tir (joueur ou ennemi, fonction commune)
     directions = ["E", "NE", "SE"]
     #bruitage
-    son_tir = pygame.mixer.Sound("ressources/son/tir.ogg")
+    #son_tir = pygame.mixer.Sound("ressources/son/tir.ogg")
     son_tir.play()
     
     for numerodirection in range(nbtir):
@@ -403,16 +403,17 @@ while not arret:
 
         if temps - heuredeces >= 2500 and temps - heuredeces < 7500 and joueur.immunite:
             if temps - heuredeces < 2600 and joueur.vie > 0:
+                az=1
 				#bruitage, réapparition tant qu'il reste des vies
-                bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
-                bruit_reapparition.play()
+                #bruit_reapparition = pygame.mixer.Sound("ressources/son/reapparition.ogg")
+               # bruit_reapparition.play()
 
             # pas de résurrection si le joueur n'a plus de vie
             # Destruction de tous les objets et lancement menu gameover
             if joueur.vie == 0:
                 print("Game Over")
-                musique.stop()
-                son_gameover.play(0,0,400)
+                #musique.stop()
+                #son_gameover.play(0,0,400)
                 vidageliste(liste_tout)
                 initialisation = 0
                 etatactuel = "GameOver"
