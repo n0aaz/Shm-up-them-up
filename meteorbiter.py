@@ -454,7 +454,10 @@ while not arret:
         # utilisation d'un texte en guise de bouton , voir plus haut le menu pause
         for event in pygame.event.get():
             if boutonmenu.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-                arret = True
+                initialisation = 0
+                etatactuel = "menuprincipal"
+                vidageliste(liste_textes)
+                
         
     elif etatactuel == "GameOver":
 
@@ -574,23 +577,23 @@ while not arret:
             liste_textes.add(Credits)
 
 
-
-        if Scorebouton.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-            initialisation = 0
-            vidageliste(liste_textes)
-            etatactuel = "Score"
-        if Jouer.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-            initialisation = 0
-            vidageliste(liste_textes)
-            etatactuel = "Jeu"
-        if Vais.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-            initialisation = 0
-            vidageliste(liste_textes)
-            etatactuel = "Vaisseau"
-        if Credits.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
-            initialisation = 0
-            vidageliste(liste_textes)
-            etatactuel = "Credits"
+        for event in pygame.event.get():
+            if Scorebouton.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                initialisation = 0
+                vidageliste(liste_textes)
+                etatactuel = "Score"
+            if Jouer.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                initialisation = 0
+                vidageliste(liste_textes)
+                etatactuel = "Jeu"
+            if Vais.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                initialisation = 0
+                vidageliste(liste_textes)
+                etatactuel = "Vaisseau"
+            if Credits.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONUP:
+                initialisation = 0
+                vidageliste(liste_textes)
+                etatactuel = "Credits"
 
     elif etatactuel == "Credits" :
         if initialisation < 1:
