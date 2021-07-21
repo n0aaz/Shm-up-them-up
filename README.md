@@ -24,6 +24,11 @@ Le jeu est vraiment simpliste avec quelques features que je trouvais à l'époqu
 - Plusieurs types de vaisseaux et d'ennemis différents ! 
 - Plusieurs powerUps qui vous permettent de tirer plus vite ! 
 
+## CoMmEnT qu'On LaNcE Le Jeu? 
+
+```console
+python3 meteorbiter.py
+```
 ## Un aperçu/ A preview of the game: 
 C'est un GIF, c'est plus lent que la réalité, le jeu est en soi beaucoup plus rapide.
 
